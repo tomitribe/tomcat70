@@ -468,6 +468,12 @@ public class FileDirContext extends BaseDirContext {
 
         // Note: No custom attributes allowed
 
+        // bind() is meant to create a file so ensure that the path doesn't end
+        // in '/'
+        if (name.endsWith("/")) {
+            throw new NamingException(sm.getString("resources.bindFailed", name));
+        }
+
         File file = new File(base, name);
         if (file.exists())
             throw new NameAlreadyBoundException
@@ -768,6 +774,14 @@ public class FileDirContext extends BaseDirContext {
     protected File file(String name) {
 
         File file = new File(base, name);
+
+        // If the requested names ends in '/', the Java File API will return a
+        // matching file if one exists. This isn't what we want as it is not
+        // consistent with the Servlet spec rules for request mapping.
+        if (file.isFile() && name.endsWith("/")) {
+            return null;
+        }
+
         if (file.exists() && file.canRead()) {
 
             if (allowLinking)

@@ -151,15 +151,15 @@ public class VirtualDirContext extends FileDirContext {
                 String resourcesDir = dirList.get(0);
                 if (name.equals(path)) {
                     File f = new File(resourcesDir);
-                    if (f.exists() && f.canRead()) {
+                    if (f.exists() && f.isFile() && !name.endsWith("/") && f.canRead()) {
                         return new FileResourceAttributes(f);
                     }
                 }
                 path += "/";
                 if (name.startsWith(path)) {
                     String res = name.substring(path.length());
-                    File f = new File(resourcesDir + "/" + res);
-                    if (f.exists() && f.canRead()) {
+                    File f = new File(resourcesDir , res);
+                    if (f.exists() && f.isFile() && !name.endsWith("/") && f.canRead()) {
                         return new FileResourceAttributes(f);
                     }
                 }
@@ -185,7 +185,7 @@ public class VirtualDirContext extends FileDirContext {
             if (name.equals(path)) {
                 for (String resourcesDir : dirList) {
                     file = new File(resourcesDir);
-                    if (file.exists() && file.canRead()) {
+                    if (file.exists() && file.isFile() && !name.endsWith("/") && file.canRead()) {
                         return file;
                     }
                 }
@@ -194,7 +194,7 @@ public class VirtualDirContext extends FileDirContext {
                 String res = name.substring(path.length());
                 for (String resourcesDir : dirList) {
                     file = new File(resourcesDir, res);
-                    if (file.exists() && file.canRead()) {
+                    if (file.exists() && file.isFile() && !name.endsWith("/") && file.canRead()) {
                         return file;
                     }
                 }
@@ -265,7 +265,7 @@ public class VirtualDirContext extends FileDirContext {
                 for (String resourcesDir : dirList) {
                     File f = new File(resourcesDir);
                     if (f.exists() && f.canRead()) {
-                        if (f.isFile()) {
+                        if (f.isFile() && !name.endsWith("/")) {
                             return new FileResource(f);
                         }
                         else {
@@ -281,7 +281,7 @@ public class VirtualDirContext extends FileDirContext {
                 for (String resourcesDir : dirList) {
                     File f = new File(resourcesDir + "/" + res);
                     if (f.exists() && f.canRead()) {
-                        if (f.isFile()) {
+                        if (f.isFile() && !name.endsWith("/")) {
                             return new FileResource(f);
                         }
                         else {
