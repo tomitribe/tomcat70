@@ -158,7 +158,7 @@ final class StandardHostValve extends ValveBase {
 
         boolean asyncAtStart = request.isAsync(); 
         boolean asyncDispatching = request.isAsyncDispatching();
-        if (asyncAtStart || context.fireRequestInitEvent(request)) {
+        if (asyncAtStart || context.fireRequestInitEvent(request.getRequest())) {
 
             // Ask this Context to process this request. Requests that are in
             // async mode and are not being dispatched to this resource must be
@@ -211,7 +211,7 @@ final class StandardHostValve extends ValveBase {
             }
 
             if (!request.isAsync() && (!asyncAtStart || !response.isErrorReportRequired())) {
-                context.fireRequestDestroyEvent(request);
+                context.fireRequestDestroyEvent(request.getRequest());
             }
         }
 
