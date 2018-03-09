@@ -53,9 +53,14 @@ public class HttpParser {
     private static final Map<String,Integer> fieldTypes =
             new HashMap<String,Integer>();
 
-    // Arrays used by isToken(), isHex()
-    private static final boolean isToken[] = new boolean[128];
-    private static final boolean isHex[] = new boolean[128];
+    private static final int ARRAY_SIZE = 128;
+
+    private static final boolean[] IS_CONTROL = new boolean[ARRAY_SIZE];
+    private static final boolean[] IS_SEPARATOR = new boolean[ARRAY_SIZE];
+    private static final boolean[] IS_TOKEN = new boolean[ARRAY_SIZE];
+    private static final boolean[] IS_HEX = new boolean[ARRAY_SIZE];
+    private static final boolean[] IS_NOT_REQUEST_TARGET = new boolean[ARRAY_SIZE];
+    private static final boolean[] IS_HTTP_PROTOCOL = new boolean[ARRAY_SIZE];
 
     static {
         // Digest field types.
@@ -77,24 +82,43 @@ public class HttpParser {
         // RFC2617 says nc is 8LHEX. <">8LHEX<"> will also be accepted
         fieldTypes.put("nc", FIELD_TYPE_LHEX);
 
-        // Setup the flag arrays
-        for (int i = 0; i < 128; i++) {
-            if (i <= 32) { // includes '\t' and ' '
-                isToken[i] = false;
-            } else if (i == '(' || i == ')' || i == '<' || i == '>'  || i == '@'  ||
-                       i == ',' || i == ';' || i == ':' || i == '\\' || i == '\"' ||
-                       i == '/' || i == '[' || i == ']' || i == '?'  || i == '='  ||
-                       i == '{' || i == '}') {
-                isToken[i] = false;
-            } else {
-                isToken[i] = true;
+        for (int i = 0; i < ARRAY_SIZE; i++) {
+            // Control> 0-31, 127
+            if (i < 32 || i == 127) {
+                IS_CONTROL[i] = true;
             }
 
-            if (i >= '0' && i <= '9' || i >= 'A' && i <= 'F' ||
-                    i >= 'a' && i <= 'f') {
-                isHex[i] = true;
-            } else {
-                isHex[i] = false;
+            // Separator
+            if (    i == '(' || i == ')' || i == '<' || i == '>'  || i == '@'  ||
+                    i == ',' || i == ';' || i == ':' || i == '\\' || i == '\"' ||
+                    i == '/' || i == '[' || i == ']' || i == '?'  || i == '='  ||
+                    i == '{' || i == '}' || i == ' ' || i == '\t') {
+                IS_SEPARATOR[i] = true;
+            }
+
+            // Token: Anything 0-127 that is not a control and not a separator
+            if (!IS_CONTROL[i] && !IS_SEPARATOR[i] && i < 128) {
+                IS_TOKEN[i] = true;
+            }
+
+            // Hex: 0-9, a-f, A-F
+            if ((i >= '0' && i <='9') || (i >= 'a' && i <= 'f') || (i >= 'A' && i <= 'F')) {
+                IS_HEX[i] = true;
+            }
+
+            // Not valid for request target.
+            // Combination of multiple rules from RFC7230 and RFC 3986. Must be
+            // ASCII, no controls plus a few additional characters excluded
+            if (IS_CONTROL[i] || i > 127 ||
+                    i == ' ' || i == '\"' || i == '#' || i == '<' || i == '>' || i == '\\' ||
+                    i == '^' || i == '`'  || i == '{' || i == '|' || i == '}') {
+                IS_NOT_REQUEST_TARGET[i] = true;
+            }
+
+            // Not valid for HTTP protocol
+            // "HTTP/" DIGIT "." DIGIT
+            if (i == 'H' || i == 'T' || i == 'P' || i == '/' || i == '.' || (i >= '0' && i <= '9')) {
+                IS_HTTP_PROTOCOL[i] = true;
             }
         }
     }
@@ -228,13 +252,26 @@ public class HttpParser {
         return new MediaType(type, subtype, parameters);
     }
 
+
     public static String unquote(String input) {
-        if (input == null || input.length() < 2 || input.charAt(0) != '"') {
+        if (input == null || input.length() < 2) {
             return input;
         }
 
+        int start;
+        int end;
+
+        // Skip surrounding quotes if there are any
+        if (input.charAt(0) == '"') {
+            start = 1;
+            end = input.length() - 1;
+        } else {
+            start = 0;
+            end = input.length();
+        }
+
         StringBuilder result = new StringBuilder();
-        for (int i = 1 ; i < (input.length() - 1); i++) {
+        for (int i = start ; i < end; i++) {
             char c = input.charAt(i);
             if (input.charAt(i) == '\\') {
                 i++;
@@ -246,23 +283,48 @@ public class HttpParser {
         return result.toString();
     }
 
-    private static boolean isToken(int c) {
+
+    public static boolean isToken(int c) {
         // Fast for correct values, slower for incorrect ones
         try {
-            return isToken[c];
+            return IS_TOKEN[c];
         } catch (ArrayIndexOutOfBoundsException ex) {
             return false;
         }
     }
 
-    private static boolean isHex(int c) {
-        // Fast for correct values, slower for incorrect ones
+
+    public static boolean isHex(int c) {
+        // Fast for correct values, slower for some incorrect ones
         try {
-            return isHex[c];
+            return IS_HEX[c];
         } catch (ArrayIndexOutOfBoundsException ex) {
             return false;
         }
     }
+
+
+    public static boolean isNotRequestTarget(int c) {
+        // Fast for valid request target characters, slower for some incorrect
+        // ones
+        try {
+            return IS_NOT_REQUEST_TARGET[c];
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            return true;
+        }
+    }
+
+
+    public static boolean isHttpProtocol(int c) {
+        // Fast for valid HTTP protocol characters, slower for some incorrect
+        // ones
+        try {
+            return IS_HTTP_PROTOCOL[c];
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            return false;
+        }
+    }
+
 
     // Skip any LWS and return the next char
     private static int skipLws(StringReader input, boolean withReset)
@@ -287,7 +349,7 @@ public class HttpParser {
     }
 
     private static SkipConstantResult skipConstant(StringReader input,
-            String constant) throws IOException {
+                                                   String constant) throws IOException {
         int len = constant.length();
 
         int c = skipLws(input, false);
@@ -337,7 +399,7 @@ public class HttpParser {
      *         before the quoted string was terminated
      */
     private static String readQuotedString(StringReader input,
-            boolean returnQuoted) throws IOException {
+                                           boolean returnQuoted) throws IOException {
 
         int c = skipLws(input, false);
 
@@ -373,7 +435,7 @@ public class HttpParser {
     }
 
     private static String readTokenOrQuotedString(StringReader input,
-            boolean returnQuoted) throws IOException {
+                                                  boolean returnQuoted) throws IOException {
 
         // Go back so first non-LWS character is available to be read again
         int c = skipLws(input, true);
