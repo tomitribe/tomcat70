@@ -197,6 +197,11 @@
         uploaded via a specially crafted request when HTTP PUT was enabled.
         (markt)
       </fix>
+      <fix>
+        Process all <code>ServletSecurity</code> annotations at web application
+        start rather than at servlet load time to ensure constraints are applied
+        consistently. (markt)
+      </fix>
     </changelog>
   </subsection>
   <subsection name="Coyote">

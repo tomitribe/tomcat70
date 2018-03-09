@@ -694,7 +694,7 @@ public class StandardWrapper extends ContainerBase
      */
     @Override
     public void setServletSecurityAnnotationScanRequired(boolean b) {
-        this.servletSecurityAnnotationScanRequired = b;
+        // NO-OP
     }
 
     // --------------------------------------------------------- Public Methods
@@ -1174,8 +1174,6 @@ public class StandardWrapper extends ContainerBase
                 }
             }
 
-            processServletSecurityAnnotation(servlet.getClass());
-
             // Special handling for ContainerServlet instances
             if ((servlet instanceof ContainerServlet) &&
                     (isContainerProvidedServlet(servletClass) ||
@@ -1218,39 +1216,7 @@ public class StandardWrapper extends ContainerBase
      */
     @Override
     public void servletSecurityAnnotationScan() throws ServletException {
-        if (getServlet() == null) {
-            Class<?> clazz = null;
-            try {
-                clazz = getParent().getLoader().getClassLoader().loadClass(
-                        getServletClass());
-                processServletSecurityAnnotation(clazz);
-            } catch (ClassNotFoundException e) {
-                // Safe to ignore. No class means no annotations to process
-            }
-        } else {
-            if (servletSecurityAnnotationScanRequired) {
-                processServletSecurityAnnotation(getServlet().getClass());
-            }
-        }
-    }
-
-    private void processServletSecurityAnnotation(Class<?> clazz) {
-        // Calling this twice isn't harmful so no syncs
-        servletSecurityAnnotationScanRequired = false;
-
-        Context ctxt = (Context) getParent();
-        
-        if (ctxt.getIgnoreAnnotations()) {
-            return;
-        }
-
-        ServletSecurity secAnnotation =
-            clazz.getAnnotation(ServletSecurity.class);
-        if (secAnnotation != null) {
-            ctxt.addServletSecurity(
-                    new ApplicationServletRegistration(this, ctxt),
-                    new ServletSecurityElement(secAnnotation));
-        }
+        // NO-OP
     }
 
     private synchronized void initServlet(Servlet servlet)

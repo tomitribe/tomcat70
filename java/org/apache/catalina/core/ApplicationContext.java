@@ -50,8 +50,10 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 import javax.servlet.ServletRequestAttributeListener;
 import javax.servlet.ServletRequestListener;
+import javax.servlet.ServletSecurityElement;
 import javax.servlet.SessionCookieConfig;
 import javax.servlet.SessionTrackingMode;
+import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.descriptor.JspConfigDescriptor;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionListener;
@@ -66,6 +68,7 @@ import org.apache.catalina.Wrapper;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.deploy.FilterDef;
 import org.apache.catalina.util.ResourceSet;
+import org.apache.catalina.util.Introspection;
 import org.apache.catalina.util.ServerInfo;
 import org.apache.naming.resources.DirContextURLStreamHandler;
 import org.apache.naming.resources.Resource;
@@ -1165,14 +1168,27 @@ public class ApplicationContext
             }
         }
 
+        ServletSecurity annotation = null;
         if (servlet == null) {
             wrapper.setServletClass(servletClass);
+            Class<?> clazz = Introspection.loadClass(context, servletClass);
+            if (clazz != null) {
+                annotation = clazz.getAnnotation(ServletSecurity.class);
+            }
         } else {
             wrapper.setServletClass(servlet.getClass().getName());
             wrapper.setServlet(servlet);
+            if (context.wasCreatedDynamicServlet(servlet)) {
+                annotation = servlet.getClass().getAnnotation(ServletSecurity.class);
+            }
         }
 
-        return context.dynamicServletAdded(wrapper);
+        ServletRegistration.Dynamic registration =
+                new ApplicationServletRegistration(wrapper, context);
+        if (annotation != null) {
+            registration.setServletSecurity(new ServletSecurityElement(annotation));
+        }
+        return registration;
     }
 
 
