@@ -423,6 +423,18 @@ public class DefaultServlet
     }
 
 
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        if (req.getDispatcherType() == DispatcherType.ERROR) {
+            doGet(req, resp);
+        } else {
+            super.service(req, resp);
+        }
+    }
+
+
     /**
      * Process a GET request for the specified resource.
      *
@@ -860,8 +872,7 @@ public class DefaultServlet
             }
         }
 
-        boolean isError =
-            response.getStatus() >= HttpServletResponse.SC_BAD_REQUEST;
+        boolean isError = DispatcherType.ERROR == request.getDispatcherType();
 
         // Check if the conditions specified in the optional If headers are
         // satisfied.
@@ -2364,6 +2375,8 @@ public class DefaultServlet
 
         /**
          * Validate range.
+         *
+         * @return true if the range is valid, otherwise false
          */
         public boolean validate() {
             if (end >= length)
