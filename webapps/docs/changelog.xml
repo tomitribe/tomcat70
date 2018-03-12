@@ -234,6 +234,10 @@
         New configuration option <code>ajpFlush</code> for the AJP connectors
         to disable the sending of AJP flush packets. (rjung)
       </add>
+      <fix>
+        <bug>60409</bug>: When unable to complete sendfile request, ensure the
+        Processor will be added to the cache only once. (markt/violetagg)
+      </fix>
     </changelog>
   </subsection>
   <subsection name="Jasper">

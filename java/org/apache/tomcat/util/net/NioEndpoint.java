@@ -1413,11 +1413,15 @@ public class NioEndpoint extends AbstractEndpoint<NioChannel> {
                 }
             }catch ( IOException x ) {
                 if ( log.isDebugEnabled() ) log.debug("Unable to complete sendfile request:", x);
-                cancelledKey(sk,SocketStatus.ERROR,false);
+                if (!event) {
+                    cancelledKey(sk,SocketStatus.ERROR,false);
+                }
                 return false;
             }catch ( Throwable t ) {
                 log.error("",t);
-                cancelledKey(sk, SocketStatus.ERROR, false);
+                if (!event) {
+                    cancelledKey(sk, SocketStatus.ERROR, false);
+                }
                 return false;
             }
             return true;
