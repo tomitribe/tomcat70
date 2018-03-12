@@ -41,6 +41,7 @@ import org.apache.catalina.Container;
 import org.apache.catalina.ContainerEvent;
 import org.apache.catalina.ContainerListener;
 import org.apache.catalina.Context;
+import org.apache.catalina.Engine;
 import org.apache.catalina.Host;
 import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleEvent;
@@ -68,6 +69,7 @@ import org.apache.naming.ResourceLinkRef;
 import org.apache.naming.ResourceRef;
 import org.apache.naming.ServiceRef;
 import org.apache.naming.TransactionRef;
+import org.apache.naming.factory.ResourceLinkFactory;
 import org.apache.tomcat.util.modeler.Registry;
 import org.apache.tomcat.util.res.StringManager;
 
@@ -343,6 +345,11 @@ public class NamingContextListener
                     for (ObjectName objectName : names) {
                         registry.unregisterComponent(objectName);
                     }
+                }
+
+                javax.naming.Context global = getGlobalNamingContext();
+                if (global != null) {
+                    ResourceLinkFactory.deregisterGlobalResourceAccess(global);
                 }
             } finally {
                 objectNames.clear();
@@ -766,22 +773,22 @@ public class NamingContextListener
         
         ObjectName name = null;
         String quotedResourceName = ObjectName.quote(resource.getName());
-        if (container instanceof Server) {        
+        if (container instanceof Server) {
             name = new ObjectName(domain + ":type=DataSource" +
-                        ",class=" + resource.getType() + 
-                        ",name=" + quotedResourceName);
-        } else if (container instanceof Context) {                    
+                    ",class=" + resource.getType() +
+                    ",name=" + quotedResourceName);
+        } else if (container instanceof Context) {
             String contextName = ((Context)container).getName();
             if (!contextName.startsWith("/"))
                 contextName = "/" + contextName;
             Host host = (Host) ((Context)container).getParent();
             name = new ObjectName(domain + ":type=DataSource" +
-                        ",context=" + contextName + 
-                        ",host=" + host.getName() +
-                        ",class=" + resource.getType() +
-                        ",name=" + quotedResourceName);
+                    ",context=" + contextName +
+                    ",host=" + host.getName() +
+                    ",class=" + resource.getType() +
+                    ",name=" + quotedResourceName);
         }
-        
+
         return (name);
 
     }
@@ -1155,9 +1162,9 @@ public class NamingContextListener
                 ref.add(refAddr);
             }
         }
-        javax.naming.Context ctx = 
-            "UserTransaction".equals(resourceLink.getName()) 
-            ? compCtx : envCtx;
+        javax.naming.Context ctx =
+                "UserTransaction".equals(resourceLink.getName())
+                        ? compCtx : envCtx;
         try {
             if (logger.isDebugEnabled())
                 log.debug("  Adding resource link " + resourceLink.getName());
@@ -1167,8 +1174,17 @@ public class NamingContextListener
             logger.error(sm.getString("naming.bindFailed", e));
         }
 
+        ResourceLinkFactory.registerGlobalResourceAccess(
+                getGlobalNamingContext(), resourceLink.getName(), resourceLink.getGlobal());
     }
 
+    private javax.naming.Context getGlobalNamingContext() {
+        if (container instanceof Context) {
+            Engine e = (Engine) ((Context) container).getParent().getParent();
+            return e.getService().getServer().getGlobalNamingContext();
+        }
+        return null;
+    }
 
     /**
      * Set the specified EJBs in the naming context.
@@ -1270,6 +1286,7 @@ public class NamingContextListener
             logger.error(sm.getString("naming.unbindFailed", e));
         }
 
+        ResourceLinkFactory.deregisterGlobalResourceAccess(getGlobalNamingContext(), name);
     }
 
 
