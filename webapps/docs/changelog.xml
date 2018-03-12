@@ -233,6 +233,10 @@
         Add additional checks for valid characters to the HTTP request line
         parsing so invalid request lines are rejected sooner. (markt)
       </add>
+      <fix>
+        <bug>60101</bug>: Remove preloading of the class that was deleted.
+        (violetagg)
+      </fix>
     </changelog>
   </subsection>
   <subsection name="Cluster">
