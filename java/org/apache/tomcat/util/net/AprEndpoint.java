@@ -2087,7 +2087,7 @@ public class AprEndpoint extends AbstractEndpoint<Long> {
         // Position
         public long pos;
         // KeepAlive flag
-        public boolean keepAlive;
+        public SendfileKeepAliveState keepAliveState = SendfileKeepAliveState.NONE;
     }
 
 
@@ -2175,25 +2175,25 @@ public class AprEndpoint extends AbstractEndpoint<Long> {
          * @return true if all the data has been sent right away, and false
          *              otherwise
          */
-        public boolean add(SendfileData data) {
+        public SendfileState add(SendfileData data) {
             // Initialize fd from data given
             try {
                 data.fdpool = Socket.pool(data.socket);
                 data.fd = File.open
-                    (data.fileName, File.APR_FOPEN_READ
-                     | File.APR_FOPEN_SENDFILE_ENABLED | File.APR_FOPEN_BINARY,
-                     0, data.fdpool);
+                        (data.fileName, File.APR_FOPEN_READ
+                                        | File.APR_FOPEN_SENDFILE_ENABLED | File.APR_FOPEN_BINARY,
+                                0, data.fdpool);
                 data.pos = data.start;
                 // Set the socket to nonblocking mode
                 Socket.timeoutSet(data.socket, 0);
                 while (true) {
                     long nw = Socket.sendfilen(data.socket, data.fd,
-                                               data.pos, data.end - data.pos, 0);
+                            data.pos, data.end - data.pos, 0);
                     if (nw < 0) {
                         if (!(-nw == Status.EAGAIN)) {
                             Pool.destroy(data.fdpool);
                             data.socket = 0;
-                            return false;
+                            return SendfileState.ERROR;
                         } else {
                             // Break the loop and add the socket to poller.
                             break;
@@ -2206,13 +2206,13 @@ public class AprEndpoint extends AbstractEndpoint<Long> {
                             // Set back socket to blocking mode
                             Socket.timeoutSet(
                                     data.socket, getSoTimeout() * 1000);
-                            return true;
+                            return SendfileState.DONE;
                         }
                     }
                 }
             } catch (Exception e) {
                 log.warn(sm.getString("endpoint.sendfile.error"), e);
-                return false;
+                return SendfileState.ERROR;
             }
             // Add socket to the list. Newly added sockets will wait
             // at most for pollTime before being polled
@@ -2220,7 +2220,7 @@ public class AprEndpoint extends AbstractEndpoint<Long> {
                 addS.add(data);
                 this.notify();
             }
-            return false;
+            return SendfileState.PENDING;
         }
 
         /**
@@ -2330,21 +2330,34 @@ public class AprEndpoint extends AbstractEndpoint<Long> {
                             state.pos = state.pos + nw;
                             if (state.pos >= state.end) {
                                 remove(state);
-                                if (state.keepAlive) {
+                                switch (state.keepAliveState) {
+                                case NONE: {
+                                    // Close the socket since this is
+                                    // the end of the not keep-alive request.
+                                    closeSocket(state.socket);
+                                    break;
+                                }
+                                case PIPELINED: {
                                     // Destroy file descriptor pool, which should close the file
                                     Pool.destroy(state.fdpool);
-                                    Socket.timeoutSet(state.socket,
-                                            getSoTimeout() * 1000);
-                                    // If all done put the socket back in the
-                                    // poller for processing of further requests
-                                    getPoller().add(
-                                            state.socket, getKeepAliveTimeout(),
-                                            true, false);
-                                } else {
-                                    // Close the socket since this is
-                                    // the end of not keep-alive request.
-                                    closeSocket(state.socket);
+                                    Socket.timeoutSet(state.socket, getSoTimeout() * 1000);
+                                    // Process the pipelined request data
+                                    if (!processSocket(state.socket, SocketStatus.OPEN_READ)) {
+                                        closeSocket(state.socket);
+                                    }
+                                    break;
                                 }
+                                case OPEN: {
+                                    // Destroy file descriptor pool, which should close the file
+                                    Pool.destroy(state.fdpool);
+                                    Socket.timeoutSet(state.socket, getSoTimeout() * 1000);
+                                    // Put the socket back in the poller for
+                                    // processing of further requests
+                                    getPoller().add(state.socket, getKeepAliveTimeout(),
+                                            true, false);
+                                    break;
+                                }
+                            }
                             }
                         }
                     } else if (rv < 0) {

@@ -238,6 +238,9 @@
         <bug>60409</bug>: When unable to complete sendfile request, ensure the
         Processor will be added to the cache only once. (markt/violetagg)
       </fix>
+      <fix>
+        Improve sendfile handling when requests are pipelined. (markt)
+      </fix>
     </changelog>
   </subsection>
   <subsection name="Jasper">
