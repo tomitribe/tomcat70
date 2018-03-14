@@ -392,6 +392,8 @@ public abstract class RealmBase extends LifecycleMBeanBase implements Realm {
 
         if (serverCredentials == null) {
             // User was not found
+            // Waste a bit of time as not to reveal that the user does not exist.
+            compareCredentials(credentials, getClass().getName());
 
             if (containerLog.isTraceEnabled()) {
                 containerLog.trace(sm.getString("realmBase.authenticateFailure",

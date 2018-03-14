@@ -150,6 +150,10 @@ public class MemoryRealm  extends RealmBase {
         GenericPrincipal principal = principals.get(username);
 
         if (principal == null || principal.getPassword() == null) {
+            // User was not found in the database or the password was null
+            // Waste a bit of time as not to reveal that the user does not exist.
+            compareCredentials(credentials, getClass().getName());
+
             if (log.isDebugEnabled())
                 log.debug(sm.getString("memoryRealm.authenticateFailure", username));
             return null;

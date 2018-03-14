@@ -331,6 +331,8 @@ public class DataSourceRealm
 
         if(dbCredentials == null) {
             // User was not found in the database.
+            // Waste a bit of time as not to reveal that the user does not exist.
+            compareCredentials(credentials, getClass().getName());
 
             if (containerLog.isTraceEnabled())
                 containerLog.trace(sm.getString("dataSourceRealm.authenticateFailure",

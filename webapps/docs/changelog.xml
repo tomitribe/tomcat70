@@ -249,6 +249,9 @@
       <fix>
         Improve sendfile handling when requests are pipelined. (markt)
       </fix>
+      <fix>
+        Make timing attacks against the Realm implementations harder. (schultz)
+      </fix>
     </changelog>
   </subsection>
   <subsection name="Jasper">
