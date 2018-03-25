@@ -68,6 +68,9 @@
   </subsection>
   <subsection name="General">
     <changelog>
+      <fix>
+        Patched by Tomitribe for the following CVEs: CVE-2016-6816, CVE-2018-1305, CVE-2017-12615, CVE-2018-1304, CVE-2017-5648, CVE-2012-5568, CVE-2016-6796, CVE-2017-5647, CVE-2016-8745, CVE-2016-6797, CVE-2016-6794, CVE-2016-5018, CVE-2017-5664, CVE-2016-0762, CVE-2017-7674.
+      </fix>
       <add>
         Allow to configure multiple JUnit test class patterns with the build
         property <code>test.name</code> and document the property in
