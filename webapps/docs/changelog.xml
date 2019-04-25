@@ -2355,6 +2355,13 @@
         In Tomcat tests: log name of the current test method at start time.
         (kkolinko) 
       </scode>
+      <add>
+        When the CGI Servlet is configured with
+        <code>enableCmdLineArguments</code> set to true, limit the encoded form
+        of the individual command line arguments to those values allowed by RFC
+        3875. This restriction may be relaxed by the use of the new
+        initialisation parameter <code>cmdLineArgumentsEncoded</code>. (markt)
+      </add>
     </changelog>
   </subsection>
 </section>
