@@ -267,6 +267,9 @@
         extend SecurityManager protection to the system property replacement
         feature of the digester. (markt)
       </add>
+      <fix>
+       Refactor JMX remote RMI registry creation. (remm)
+      </fix>
     </changelog>
   </subsection>
   <subsection name="Coyote">
