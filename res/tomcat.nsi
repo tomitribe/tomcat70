@@ -46,7 +46,6 @@ Var Arch
 Var ResetInstDir
 Var TomcatPortShutdown
 Var TomcatPortHttp
-Var TomcatPortAjp
 Var TomcatMenuEntriesEnable
 Var TomcatShortcutAllUsers
 Var TomcatServiceName
@@ -62,7 +61,6 @@ Var TomcatAdminRoles
 Var CtlJavaHome
 Var CtlTomcatPortShutdown
 Var CtlTomcatPortHttp
-Var CtlTomcatPortAjp
 Var CtlTomcatServiceName
 Var CtlTomcatShortcutAllUsers
 Var CtlTomcatAdminUsername
@@ -106,7 +104,6 @@ Var ServiceInstallLog
   LangString TEXT_JVM_LABEL1 ${LANG_ENGLISH} "Please select the path of a Java SE 6.0 or later JRE installed on your system."
   LangString TEXT_CONF_LABEL_PORT_SHUTDOWN ${LANG_ENGLISH} "Server Shutdown Port"
   LangString TEXT_CONF_LABEL_PORT_HTTP ${LANG_ENGLISH} "HTTP/1.1 Connector Port"
-  LangString TEXT_CONF_LABEL_PORT_AJP ${LANG_ENGLISH} "AJP/1.3 Connector Port"
   LangString TEXT_CONF_LABEL_SERVICE_NAME ${LANG_ENGLISH} "Windows Service Name"
   LangString TEXT_CONF_LABEL_SHORTCUT_ALL_USERS ${LANG_ENGLISH} "Create shortcuts for all users"
   LangString TEXT_CONF_LABEL_ADMIN ${LANG_ENGLISH} "Tomcat Administrator Login (optional)"
@@ -372,7 +369,6 @@ Function .onInit
   StrCpy $JavaHome ""
   StrCpy $TomcatPortShutdown "8005"
   StrCpy $TomcatPortHttp "8080"
-  StrCpy $TomcatPortAjp "8009"
   StrCpy $TomcatMenuEntriesEnable "0"
   StrCpy $TomcatShortcutAllUsers "0"
   StrCpy $TomcatServiceDefaultName "Tomcat@VERSION_MAJOR@"
@@ -495,13 +491,6 @@ Function pageConfiguration
   Pop $CtlTomcatPortHttp
   ${NSD_SetTextLimit} $CtlTomcatPortHttp 5
 
-  ${NSD_CreateLabel} 0 36u 100u 14u "$(TEXT_CONF_LABEL_PORT_AJP)"
-  Pop $R0
-
-  ${NSD_CreateText} 150u 34u 50u 12u "$TomcatPortAjp"
-  Pop $CtlTomcatPortAjp
-  ${NSD_SetTextLimit} $CtlTomcatPortAjp 5
-
   ${NSD_CreateLabel} 0 57u 140u 14u "$(TEXT_CONF_LABEL_SERVICE_NAME)"
   Pop $R0
 
@@ -539,7 +528,6 @@ FunctionEnd
 Function pageConfigurationLeave
   ${NSD_GetText} $CtlTomcatPortShutdown $TomcatPortShutdown
   ${NSD_GetText} $CtlTomcatPortHttp $TomcatPortHttp
-  ${NSD_GetText} $CtlTomcatPortAjp $TomcatPortAjp
   ${NSD_GetText} $CtlTomcatServiceName $TomcatServiceName
   ${If} $TomcatMenuEntriesEnable == "1"
     ${NSD_GetState} $CtlTomcatShortcutAllUsers $TomcatShortcutAllUsers
@@ -558,12 +546,6 @@ Function pageConfigurationLeave
 
   ${If} $TomcatPortHttp == ""
     MessageBox MB_ICONEXCLAMATION|MB_OK 'The HTTP port may not be empty'
-    Abort "Config not right"
-    Goto exit
-  ${EndIf}
-
-  ${If} $TomcatPortAjp == ""
-    MessageBox MB_ICONEXCLAMATION|MB_OK 'The AJP port may not be empty'
     Abort "Config not right"
     Goto exit
   ${EndIf}
@@ -901,7 +883,6 @@ Function configure
     IfErrors SERVER_XML_LEAVELOOP
     ${StrRep} $R4 $R3 "8005" "$TomcatPortShutdown"
     ${StrRep} $R3 $R4 "8080" "$TomcatPortHttp"
-    ${StrRep} $R4 $R3 "8009" "$TomcatPortAjp"
     FileWrite $R2 $R4
   Goto SERVER_XML_LOOP
   SERVER_XML_LEAVELOOP:
@@ -919,7 +900,6 @@ Function configure
 
   DetailPrint 'Server shutdown listener configured on port "$TomcatPortShutdown"'
   DetailPrint 'HTTP/1.1 Connector configured on port "$TomcatPortHttp"'
-  DetailPrint 'AJP/1.3 Connector configured on port "$TomcatPortAjp"'
   DetailPrint "server.xml written"
 
   StrCpy $R5 ''
