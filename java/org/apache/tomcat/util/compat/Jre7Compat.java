@@ -18,11 +18,13 @@ package org.apache.tomcat.util.compat;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.InetAddress;
 import java.util.Locale;
 
 class Jre7Compat extends JreCompat {
 
     private static final Method forLanguageTagMethod;
+    private static final Method getLoopbackAddress;
 
 
     static {
@@ -35,6 +37,18 @@ class Jre7Compat extends JreCompat {
             // Expected on Java < 7
         }
         forLanguageTagMethod = m;
+    }
+    
+    static {
+        Method m = null;
+        try {
+            m = InetAddress.class.getMethod("getLoopbackAddress");
+        } catch (SecurityException e) {
+            // Should never happen
+        } catch (NoSuchMethodException e) {
+            // Expected on Java < 7
+        }
+        getLoopbackAddress = m;
     }
 
 
@@ -53,6 +67,19 @@ class Jre7Compat extends JreCompat {
             return null;
         } catch (InvocationTargetException e) {
             return null;
+        }
+    }
+    
+    @Override
+    public InetAddress getLoopbackAddress() {
+        try {
+            return (InetAddress) getLoopbackAddress.invoke(null);
+        } catch (IllegalArgumentException e) {
+            throw new UnsupportedOperationException(e);
+       } catch (IllegalAccessException e) {
+           throw new UnsupportedOperationException(e);
+        } catch (InvocationTargetException e) {
+            throw new UnsupportedOperationException(e);
         }
     }
 }
