@@ -309,6 +309,25 @@
       port. By default, the loopback address will be used.</p>
     </attribute>
 
+    <attribute name="allowedRequestAttributesPattern" required="false">
+      <p>The AJP protocol passes some information from the reverse proxy to the
+      AJP connector using request attributes. These attributes are:</p>
+      <ul>
+        <li>javax.servlet.request.cipher_suite</li>
+        <li>javax.servlet.request.key_size</li>
+        <li>javax.servlet.request.ssl_session</li>
+        <li>javax.servlet.request.X509Certificate</li>
+        <li>AJP_LOCAL_ADDR</li>
+        <li>AJP_REMOTE_PORT</li>
+        <li>AJP_SSL_PROTOCOL</li>
+        <li>JK_LB_ACTIVATION</li>
+      </ul>
+      <p>The AJP protocol supports the passing of arbitrary request attributes.
+      Requests containing arbitrary request attributes will be rejected with a
+      403 response unless the entire attribute name matches this regular
+      expression. If not specified, the default value is <code>null</code>.</p>
+    </attribute>
+
     <attribute name="bindOnInit" required="false">
       <p>Controls when the socket used by the connector is bound. By default it
       is bound when the connector is initiated and unbound when the connector is
@@ -419,8 +438,18 @@
       expected concurrent requests (synchronous and asynchronous).</p>
     </attribute>
 
-    <attribute name="requiredSecret" required="false">
+    <attribute name="secret" required="false">
       <p>Only requests from workers with this secret keyword will be accepted.
+      The default value is <code>null</code>. This attrbute must be specified
+      with a non-null, non-zero length value unless
+      <strong>secretRequired</strong> is explicitly configured to be
+      <code>false</code>.</p>
+    </attribute>
+
+    <attribute name="secretRequired" required="false">
+      <p>If this attribute is <code>true</code>, the AJP Connector will only
+      start if the <strong>secret</strong> attribute is configured with a
+      non-null, non-zero length value. The default value is <code>true</code>.
       </p>
     </attribute>
 
