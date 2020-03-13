@@ -16,25 +16,37 @@
  */
 package org.apache.tomcat.util.compat;
 
+import java.io.OutputStream;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.InetAddress;
 import java.util.Locale;
+import java.util.zip.GZIPOutputStream;
 
 class Jre7Compat extends JreCompat {
 
+    private static final int RUNTIME_MAJOR_VERSION = 7;
     private static final Method forLanguageTagMethod;
-
+    private static final Constructor<GZIPOutputStream> gzipOutputStreamConstructor;
+    private static final Method getLoopbackAddress;
 
     static {
-        Method m = null;
+        Method m1 = null;
+        Method m15 = null;
+        Constructor<GZIPOutputStream> c = null;
         try {
-            m = Locale.class.getMethod("forLanguageTag", String.class);
+            m1 = Locale.class.getMethod("forLanguageTag", String.class);
+            c = GZIPOutputStream.class.getConstructor(OutputStream.class, boolean.class);
+            m15 = InetAddress.class.getMethod("getLoopbackAddress");
         } catch (SecurityException e) {
             // Should never happen
         } catch (NoSuchMethodException e) {
             // Expected on Java < 7
         }
-        forLanguageTagMethod = m;
+        forLanguageTagMethod = m1;
+        gzipOutputStreamConstructor = c;
+        getLoopbackAddress = m15;
     }
 
 
@@ -53,6 +65,35 @@ class Jre7Compat extends JreCompat {
             return null;
         } catch (InvocationTargetException e) {
             return null;
+        }
+    }
+	
+    @Override
+    public GZIPOutputStream getFlushableGZipOutputStream(OutputStream os) {
+        try {
+            return gzipOutputStreamConstructor.newInstance(os, Boolean.TRUE);
+        } catch (InstantiationException e) {
+            throw new UnsupportedOperationException(e);
+        } catch (IllegalAccessException e) {
+            throw new UnsupportedOperationException(e);
+        } catch (IllegalArgumentException e) {
+            throw new UnsupportedOperationException(e);
+        } catch (InvocationTargetException e) {
+            throw new UnsupportedOperationException(e);
+        }
+    }
+
+
+    @Override
+    public InetAddress getLoopbackAddress() {
+        try {
+            return (InetAddress) getLoopbackAddress.invoke(null);
+        } catch (IllegalArgumentException e) {
+            throw new UnsupportedOperationException(e);
+       } catch (IllegalAccessException e) {
+           throw new UnsupportedOperationException(e);
+        } catch (InvocationTargetException e) {
+            throw new UnsupportedOperationException(e);
         }
     }
 }

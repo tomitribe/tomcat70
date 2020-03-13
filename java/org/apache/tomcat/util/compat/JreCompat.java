@@ -16,7 +16,11 @@
  */
 package org.apache.tomcat.util.compat;
 
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Locale;
+import java.util.zip.GZIPOutputStream;
 
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLServerSocket;
@@ -108,8 +112,40 @@ public class JreCompat {
         }
         return true;
     }
-   
-    
+
+
+    @SuppressWarnings("unused")
+    public GZIPOutputStream getFlushableGZipOutputStream(OutputStream os) {
+        throw new UnsupportedOperationException(
+                sm.getString("jreCompat.noFlushableGzipOutputStream"));
+    }
+
+    public InetAddress getLoopbackAddress() {
+        // Javadoc for getByName() states that calling with null will return one
+        // of the loopback addresses
+        InetAddress result = null;
+        try {
+            result = InetAddress.getByName(null);
+        } catch (UnknownHostException e) {
+            // This would be unusual but ignore it in this case.
+        }
+        if (result == null) {
+            // Fallback to default IPv4 loopback address.
+            // Not perfect but good enough and if the address is not valid the
+            // bind will fail later with an appropriate error message
+            try {
+                result = InetAddress.getByName("127.0.0.1");
+            } catch (UnknownHostException e) {
+                // Unreachable.
+                // For text representations of IP addresses only the format is
+                // checked.
+            }
+        }
+
+        return result;
+    }
+
+
     // Java 6 implementation of Java 8 methods
     
     public static boolean isJre8Available() {
