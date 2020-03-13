@@ -2769,7 +2769,7 @@ Apache Tomcat ${version} native binaries for Win64 AMD64/EMT64 platform.
           description="Download additional components for a distribution" >
 
     <antcall target="downloadfile-2">
-      <param name="sourcefile.1" value="${tomcat-native.loc.1}"/>
+      <param name="sourcefile.1" value="${tomcat-native.loc.2}"/>
       <param name="sourcefile.2" value="${tomcat-native.loc.2}"/>
       <param name="destfile" value="${tomcat-native.tar.gz}"/>
       <param name="destdir" value="${tomcat-native.home}"/>
@@ -2779,7 +2779,7 @@ Apache Tomcat ${version} native binaries for Win64 AMD64/EMT64 platform.
     </antcall>
 
     <antcall target="downloadzip-2">
-      <param name="sourcefile.1" value="${tomcat-native.win.1}"/>
+      <param name="sourcefile.1" value="${tomcat-native.win.2}"/>
       <param name="sourcefile.2" value="${tomcat-native.win.2}"/>
       <param name="destfile" value="${tomcat-native.home}/LICENSE"/>
       <param name="destdir" value="${tomcat-native.home}"/>
