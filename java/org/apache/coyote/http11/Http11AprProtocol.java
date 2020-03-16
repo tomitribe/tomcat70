@@ -17,6 +17,7 @@
 package org.apache.coyote.http11;
 
 import java.io.IOException;
+import java.util.Set;
 
 import org.apache.coyote.AbstractProtocol;
 import org.apache.coyote.Processor;
@@ -299,7 +300,8 @@ public class Http11AprProtocol extends AbstractHttp11Protocol<Long> {
         @Override
         protected Http11AprProcessor createProcessor() {
             Http11AprProcessor processor = new Http11AprProcessor(
-                    proto.getMaxHttpHeaderSize(), (AprEndpoint)proto.endpoint,
+                    proto.getMaxHttpHeaderSize(), proto.getRejectIllegalHeader(),
+                    (AprEndpoint)proto.endpoint,
                     proto.getMaxTrailerSize(), proto.getAllowedTrailerHeadersAsSet(),
                     proto.getMaxExtensionSize(), proto.getMaxSwallowSize());
             processor.setAdapter(proto.adapter);

@@ -60,12 +60,11 @@ public class Http11AprProcessor extends AbstractHttp11Processor<Long> {
     // ----------------------------------------------------------- Constructors
 
 
-    public Http11AprProcessor(int headerBufferSize, AprEndpoint endpoint, int maxTrailerSize,
+    public Http11AprProcessor(int headerBufferSize, boolean rejectIllegalHeader, AprEndpoint endpoint, int maxTrailerSize,
             Set<String> allowedTrailerHeaders, int maxExtensionSize, int maxSwallowSize) {
-
         super(endpoint);
 
-        inputBuffer = new InternalAprInputBuffer(request, headerBufferSize);
+        inputBuffer = new InternalAprInputBuffer(request, headerBufferSize, rejectIllegalHeader);
         request.setInputBuffer(inputBuffer);
 
         outputBuffer = new InternalAprOutputBuffer(response, headerBufferSize);
