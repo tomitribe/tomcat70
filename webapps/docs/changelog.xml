@@ -134,6 +134,11 @@
         <bug>62596</bug>: Remove the limit on the size of the initial HTTP
         upgrade request used to establish the web socket connection. (markt)
       </fix>
+      <fix>
+        Rename the HTTP Connector attribute <code>rejectIllegalHeaderName</code>
+        to <code>rejectIllegalHeader</code> and expand the underlying
+        implementation to include header values as well as names. (markt)
+      </fix>
     </changelog>
   </subsection>
   <subsection name="Web applications">
