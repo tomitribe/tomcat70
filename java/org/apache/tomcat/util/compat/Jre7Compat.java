@@ -48,18 +48,6 @@ class Jre7Compat extends JreCompat {
         gzipOutputStreamConstructor = c;
         getLoopbackAddress = m15;
     }
-    
-    static {
-        Method m = null;
-        try {
-            m = InetAddress.class.getMethod("getLoopbackAddress");
-        } catch (SecurityException e) {
-            // Should never happen
-        } catch (NoSuchMethodException e) {
-            // Expected on Java < 7
-        }
-        getLoopbackAddress = m;
-    }
 
 
     static boolean isSupported() {

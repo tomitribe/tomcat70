@@ -1863,9 +1863,6 @@
     <!-- 64 bit amd -->
     <copy file="${commons-daemon.home}/windows/amd64/prunsrv.exe"
         tofile="${tomcat.dist}/bin/x64/tomcat${version.major}.exe" />
-    <!-- 64 bit ia -->
-    <copy file="${commons-daemon.home}/windows/ia64/prunsrv.exe"
-        tofile="${tomcat.dist}/bin/i64/tomcat${version.major}.exe" />
     <!-- tc native -->
     <copy todir="${tomcat.dist}/bin">
       <fileset dir="${tomcat-native.home}/bin">
