@@ -49,13 +49,12 @@ public class Http11Processor extends AbstractHttp11Processor<Socket> {
 
    // ------------------------------------------------------------ Constructor
 
-
-    public Http11Processor(int headerBufferSize, JIoEndpoint endpoint, int maxTrailerSize,
+    public Http11Processor(int headerBufferSize, boolean rejectIllegalHeader, JIoEndpoint endpoint, int maxTrailerSize,
             Set<String> allowedTrailerHeaders, int maxExtensionSize, int maxSwallowSize) {
 
         super(endpoint);
         
-        inputBuffer = new InternalInputBuffer(request, headerBufferSize);
+        inputBuffer = new InternalInputBuffer(request, headerBufferSize, rejectIllegalHeader);
         request.setInputBuffer(inputBuffer);
 
         outputBuffer = new InternalOutputBuffer(response, headerBufferSize);

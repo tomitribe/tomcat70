@@ -163,7 +163,8 @@ public class Http11Protocol extends AbstractHttp11JsseProtocol<Socket> {
         @Override
         protected Http11Processor createProcessor() {
             Http11Processor processor = new Http11Processor(
-                    proto.getMaxHttpHeaderSize(), (JIoEndpoint)proto.endpoint,
+                    proto.getMaxHttpHeaderSize(), proto.getRejectIllegalHeader(),
+                    (JIoEndpoint)proto.endpoint,
                     proto.getMaxTrailerSize(), proto.getAllowedTrailerHeadersAsSet(),
                     proto.getMaxExtensionSize(), proto.getMaxSwallowSize());
             processor.setAdapter(proto.adapter);

@@ -87,7 +87,6 @@ public abstract class AbstractAjpProtocol<S> extends AbstractProtocol<S> {
      * Required secret.
      */
     protected String requiredSecret = null;
-        
     private String secret = null;
     /**
      * Set the secret that must be included with every request.
@@ -101,6 +100,7 @@ public abstract class AbstractAjpProtocol<S> extends AbstractProtocol<S> {
     protected String getSecret() {
         return secret;
     }
+    
     /**
      * Set the required secret that must be included with every request.
      *
@@ -111,9 +111,8 @@ public abstract class AbstractAjpProtocol<S> extends AbstractProtocol<S> {
      */
     @Deprecated
     public void setRequiredSecret(String requiredSecret) {
-        setSecret(requiredSecret);
+    	setSecret(requiredSecret);
     }
-    
     /**
      * @return The current secret
      *
@@ -124,9 +123,9 @@ public abstract class AbstractAjpProtocol<S> extends AbstractProtocol<S> {
     protected String getRequiredSecret() {
         return getSecret();
     }
-  
+
     private boolean secretRequired = true;
- 
+    
     public void setSecretRequired(boolean secretRequired) {
         this.secretRequired = secretRequired;
     }
