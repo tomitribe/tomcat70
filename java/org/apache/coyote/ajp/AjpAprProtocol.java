@@ -153,6 +153,7 @@ public class AjpAprProtocol extends AbstractAjpProtocol<Long> {
             processor.setSecret(proto.getSecret());
             processor.setKeepAliveTimeout(proto.getKeepAliveTimeout());
             processor.setClientCertProvider(proto.getClientCertProvider());
+            processor.setAllowedRequestAttributesPatternPattern(proto.getAllowedRequestAttributesPatternPattern());
             register(processor);
             return processor;
         }

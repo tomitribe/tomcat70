@@ -183,6 +183,7 @@ public class AjpNioProtocol extends AbstractAjpProtocol<NioChannel> {
             processor.setSecret(proto.getSecret());
             processor.setKeepAliveTimeout(proto.getKeepAliveTimeout());
             processor.setClientCertProvider(proto.getClientCertProvider());
+            processor.setAllowedRequestAttributesPatternPattern(proto.getAllowedRequestAttributesPatternPattern());
             register(processor);
             return processor;
         }
