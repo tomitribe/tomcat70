@@ -114,6 +114,9 @@ public abstract class AbstractInputBuffer<S> implements InputBuffer{
      * easily changed without breaking binary compatibility.
      */
     protected boolean rejectIllegalHeader;
+    
+    protected byte prevChr = 0;
+    protected byte chr = 0;
 
 
 
@@ -212,12 +215,13 @@ public abstract class AbstractInputBuffer<S> implements InputBuffer{
             activeFilters[i].recycle();
         }
 
+        prevChr = 0;
+        chr = 0;
         lastValid = 0;
         pos = 0;
         lastActiveFilter = -1;
         parsingHeader = true;
         swallowInput = true;
-
     }
 
 
