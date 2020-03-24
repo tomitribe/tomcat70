@@ -17,6 +17,7 @@
 package org.apache.naming.resources;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,17 +38,17 @@ import org.apache.naming.NamingEntry;
  * This should be used in conjunction with
  * {@link org.apache.catalina.loader.VirtualWebappLoader}.
  *
- * Sample context xml configuration:
+ * Sample context xml configuration:<br>
  *
- * <code>
- * &lt;Context path="/mywebapp" docBase="/Users/theuser/mywebapp/src/main/webapp" >
- *   &lt;Resources className="org.apache.naming.resources.VirtualDirContext"
+ * <pre>{@code
+ * <Context path="/mywebapp" docBase="/Users/theuser/mywebapp/src/main/webapp" >
+ *   <Resources className="org.apache.naming.resources.VirtualDirContext"
  *              extraResourcePaths="/pictures=/Users/theuser/mypictures,/movies=/Users/theuser/mymovies" />
- *   &lt;Loader className="org.apache.catalina.loader.VirtualWebappLoader"
+ *   <Loader className="org.apache.catalina.loader.VirtualWebappLoader"
  *              virtualClasspath="/Users/theuser/mywebapp/target/classes" />
- *   &lt;JarScanner scanAllDirectories="true" />
- * &lt;/Context>
- * </code>
+ *   <JarScanner scanAllDirectories="true" />
+ * </Context>
+ * }</pre>
  *
  *
  * <strong>This is not meant to be used for production.
@@ -58,6 +59,10 @@ import org.apache.naming.NamingEntry;
  * @author Fabrizio Giustina
  */
 public class VirtualDirContext extends FileDirContext {
+
+    private static final org.apache.juli.logging.Log log=
+            org.apache.juli.logging.LogFactory.getLog(VirtualDirContext.class);
+
     private String extraResourcePaths = "";
     private Map<String, List<String>> mappedResourcePaths;
 
@@ -76,7 +81,8 @@ public class VirtualDirContext extends FileDirContext {
      * be listed twice.
      * </p>
      *
-     * @param path
+     * @param path The set of file system paths and virtual paths to map them to
+     *             in the required format
      */
     public void setExtraResourcePaths(String path) {
         extraResourcePaths = path;
@@ -106,13 +112,19 @@ public class VirtualDirContext extends FileDirContext {
                     }
                     path = resSpec.substring(0, idx);
                 }
-                String dir = resSpec.substring(idx + 1);
+                File dir = new File(resSpec.substring(idx + 1));
                 List<String> resourcePaths = mappedResourcePaths.get(path);
                 if (resourcePaths == null) {
                     resourcePaths = new ArrayList<String>();
                     mappedResourcePaths.put(path, resourcePaths);
                 }
-                resourcePaths.add(dir);
+                try {
+                    resourcePaths.add(dir.getCanonicalPath());
+                } catch (IOException e) {
+                    log.warn(sm.getString("fileResources.canonical.fail", dir.getPath()));
+                    // Fall back to the absolute path
+                    resourcePaths.add(dir.getAbsolutePath());
+                }
             }
         }
         if (mappedResourcePaths.isEmpty()) {
@@ -151,15 +163,17 @@ public class VirtualDirContext extends FileDirContext {
                 String resourcesDir = dirList.get(0);
                 if (name.equals(path)) {
                     File f = new File(resourcesDir);
-                    if (f.exists() && f.isFile() && !name.endsWith("/") && f.canRead()) {
+                    f = validate(f, name, true, resourcesDir);
+                    if (f != null) {
                         return new FileResourceAttributes(f);
                     }
                 }
                 path += "/";
                 if (name.startsWith(path)) {
                     String res = name.substring(path.length());
-                    File f = new File(resourcesDir , res);
-                    if (f.exists() && f.isFile() && !name.endsWith("/") && f.canRead()) {
+                    File f = new File(resourcesDir, res);
+                    f = validate(f, res, true, resourcesDir);
+                    if (f != null) {
                         return new FileResourceAttributes(f);
                     }
                 }
@@ -168,9 +182,16 @@ public class VirtualDirContext extends FileDirContext {
         throw initialException;
     }
 
+
     @Override
     protected File file(String name) {
-        File file = super.file(name);
+        return file(name, true);
+    }
+
+
+    @Override
+    protected File file(String name, boolean mustExist) {
+        File file = super.file(name, true);
         if (file != null || mappedResourcePaths == null) {
             return file;
         }
@@ -185,16 +206,19 @@ public class VirtualDirContext extends FileDirContext {
             if (name.equals(path)) {
                 for (String resourcesDir : dirList) {
                     file = new File(resourcesDir);
-                    if (file.exists() && file.isFile() && !name.endsWith("/") && file.canRead()) {
+                    file = validate(file, name, true, resourcesDir);
+                    if (file != null) {
                         return file;
                     }
                 }
             }
-            if (name.startsWith(path + "/")) {
+            path += "/";
+            if (name.startsWith(path)) {
                 String res = name.substring(path.length());
                 for (String resourcesDir : dirList) {
                     file = new File(resourcesDir, res);
-                    if (file.exists() && file.isFile() && !name.endsWith("/") && file.canRead()) {
+                    file = validate(file, res, true, resourcesDir);
+                    if (file != null) {
                         return file;
                     }
                 }
@@ -229,7 +253,8 @@ public class VirtualDirContext extends FileDirContext {
                     if (res != null) {
                         for (String resourcesDir : dirList) {
                             File f = new File(resourcesDir, res);
-                            if (f.exists() && f.canRead() && f.isDirectory()) {
+                            f = validate(f, res, true, resourcesDir);
+                            if (f != null && f.isDirectory()) {
                                 List<NamingEntry> virtEntries = super.list(f);
                                 for (NamingEntry entry : virtEntries) {
                                     // filter duplicate
@@ -264,8 +289,9 @@ public class VirtualDirContext extends FileDirContext {
             if (name.equals(path)) {
                 for (String resourcesDir : dirList) {
                     File f = new File(resourcesDir);
-                    if (f.exists() && f.canRead()) {
-                        if (f.isFile() && !name.endsWith("/")) {
+                    f = validate(f, name, true, resourcesDir);
+                    if (f != null) {
+                        if (f.isFile()) {
                             return new FileResource(f);
                         }
                         else {
@@ -279,9 +305,10 @@ public class VirtualDirContext extends FileDirContext {
             if (name.startsWith(path)) {
                 String res = name.substring(path.length());
                 for (String resourcesDir : dirList) {
-                    File f = new File(resourcesDir + "/" + res);
-                    if (f.exists() && f.canRead()) {
-                        if (f.isFile() && !name.endsWith("/")) {
+                    File f = new File(resourcesDir, res);
+                    f = validate(f, res, true, resourcesDir);
+                    if (f != null) {
+                        if (f.isFile()) {
                             return new FileResource(f);
                         }
                         else {
@@ -303,5 +330,10 @@ public class VirtualDirContext extends FileDirContext {
         } else {
             return null;
         }
+    }
+
+
+    protected File validate(File file, String name, boolean mustExist, String absoluteBase) {
+        return validate(file, name, mustExist, normalize(absoluteBase), absoluteBase);
     }
 }

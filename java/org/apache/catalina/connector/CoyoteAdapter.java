@@ -281,10 +281,10 @@ public class CoyoteAdapter implements Adapter {
                 // Have to test this first since state may change while in this
                 // method and this is only required if entering this method in
                 // this state
-                Context ctxt = (Context) request.getMappingData().context;
-                if (ctxt != null) {
-                    ctxt.fireRequestDestroyEvent(request);
-                }
+//                Context ctxt = (Context) request.getMappingData().context;
+//                if (ctxt != null) {
+//                    ctxt.fireRequestDestroyEvent(request);
+//                }
                 // Lift any suspension (e.g. if sendError() was used by an async
                 // request) to allow the response to be written to the client
                 response.setSuspended(false);
