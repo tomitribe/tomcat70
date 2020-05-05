@@ -30,7 +30,7 @@
     <author email="kkolinko at apache.org">Konstantin Kolinko</author>
     <author email="pero at apache.org">Peter Rossbach</author>
     <author email="kfujino at apache.org">Keiichi Fujino</author>
-    <author email="timw at apache.org">Tim Whittington</author>   
+    <author email="timw at apache.org">Tim Whittington</author>
     <author email="mturk at apache.org">Mladen Turk</author>
     <author email="schultz at apache.org">Christopher Schultz</author>
     <author email="slaurent at apache.org">Sylvain Laurent</author>
@@ -104,6 +104,9 @@
         does not support PKCS12 key stores configured to use a store password of
         the empty string. (markt)
       </fix>
+      <add>
+      Improve validation of storage location when using FileStore. (markt)
+      </add>
     </changelog>
   </subsection>
   <subsection name="Jasper">
@@ -1117,7 +1120,7 @@
       <fix>
         <bug>60900</bug>: Avoid a <code>NullPointerException</code> in the APR
         Poller if a connection is closed at the same time as new data arrives on
-        that connection. (markt) 
+        that connection. (markt)
       </fix>
       <add>
         Add an option to reject requests that contain HTTP headers with invalid
@@ -2317,7 +2320,7 @@
         initiated thread has completed. Rather than implementing this by
         blocking the non-container thread, extend the internal state machine to
         track this. This removes the possibility that blocking the non-container
-        thread could trigger a deadlock. (markt)  
+        thread could trigger a deadlock. (markt)
       </add>
     </changelog>
   </subsection>
@@ -2380,7 +2383,7 @@
       </fix>
       <fix>
         <bug>60034</bug>: Correct a typo in the Manager How-To page of the
-        documentation web application. (markt) 
+        documentation web application. (markt)
       </fix>
     </changelog>
   </subsection>
@@ -2822,7 +2825,7 @@
       </fix>
       <fix>
         Limit the default TLS ciphers for JSSE (BIO, NIO) and OpenSSL (APR) to
-        those currently considered secure. (markt) 
+        those currently considered secure. (markt)
       </fix>
       <add>
         Add a new environment variable <code>JSSE_OPTS</code> that is intended
@@ -3147,7 +3150,7 @@
       </fix>
       <fix>
         <bug>58935</bug>: Remove incorrect references in the documentation to
-        using <code>jar:file:</code> URLs with the Manager application. (markt) 
+        using <code>jar:file:</code> URLs with the Manager application. (markt)
       </fix>
     </changelog>
   </subsection>
@@ -3216,7 +3219,7 @@
       <fix>
         <bug>58658</bug>: Correct a regression in 7.0.66 that prevented Tomcat
         from starting on Java 6 unless the WebSocket JARs (that require Java 7)
-        were removed. (markt) 
+        were removed. (markt)
       </fix>
     </changelog>
   </subsection>
@@ -3370,7 +3373,7 @@
       <fix>
         <bug>58635</bug>: Enable break points to be set within agent code when
         running Tomcat with a Java agent. Based on a patch by Huxing Zhang.
-        (markt) 
+        (markt)
       </fix>
       <fix>
         Add path parameter handling to
@@ -3521,7 +3524,7 @@
       <fix>
         <bug>58320</bug>: Fix concurrent access of request attributes which is
         possible during asynchronous processing. (markt)
-      </fix> 
+      </fix>
       <scode>
         In preparation for implementing enhancement <bug>57681</bug>, replace
         the use of the <code>StandardClassLoader</code> with
@@ -3669,7 +3672,7 @@
       </add>
       <fix>
         <bug>58031</bug>: Make the (first) reason parameter parsing failed
-        available as a request attribute and then use it to provide a better 
+        available as a request attribute and then use it to provide a better
         status code via the FailedRequstFilter (if configured). (markt)
       </fix>
       <fix>
@@ -3794,7 +3797,7 @@
       </fix>
       <fix>
         <bug>58112</bug>: Update the documentation for using the Catalina tasks
-        in an Apache Ant build file. (markt) 
+        in an Apache Ant build file. (markt)
       </fix>
       <fix>
         Improve the Javadoc for some of the APR socket read functions that have
@@ -4102,7 +4105,7 @@
       </fix>
       <fix>
         <bug>57837</bug>: Add <code>text/css</code> to the default list of
-        compressable MIME types. (markt) 
+        compressable MIME types. (markt)
       </fix>
     </changelog>
   </subsection>
@@ -4138,7 +4141,7 @@
       <fix>
         <bug>57338</bug>:  Improve the ability of the ClusterSingleSignOn valve
         to handle nodes being added and removed from the Cluster at run time.
-        (markt) 
+        (markt)
       </fix>
       <fix>
         Avoid unnecessary call of <code>DeltaRequest.addSessionListener()</code>
@@ -4158,7 +4161,7 @@
         since the fix was unnecessary (the bug only affected trunk) and the fix
         broke rather than fixed <code>permessage-deflate</code> if an
         uncompressed message was converted into more than one compressed
-        message. (markt) 
+        message. (markt)
       </fix>
       <fix>
         Fix log name typo in <code>WsRemoteEndpointImplServer</code> class,
@@ -4435,7 +4438,7 @@
       </fix>
       <scode>
         Refactor Connector authentication (only used by AJP) into a separate
-        method. (markt) 
+        method. (markt)
       </scode>
       <add>
         <bug>57708</bug>: Implement a new feature for AJP connectors - Tomcat
@@ -4635,7 +4638,7 @@
       <fix>
         <bug>57215</bug>: Ensure that the result of calling
         <code>HttpServletRequest.getContextPath()</code> is neither decoded nor
-        normalized as required by the Servlet specification. (markt) 
+        normalized as required by the Servlet specification. (markt)
       </fix>
       <fix>
         <bug>57216</bug>: Improve handling of invalid context paths. A context
@@ -4982,7 +4985,7 @@
       </fix>
       <fix>
         <bug>57105</bug>: When parsing web.xml do not limit the buffer element
-        of the jsp-property-group element to integer values as the allowed 
+        of the jsp-property-group element to integer values as the allowed
         values are <code>&lt;number&gt;kb</code> or <code>none</code>. (markt)
       </fix>
       <update>
@@ -5128,7 +5131,7 @@
       </update>
       <scode>
         In Tomcat tests: log name of the current test method at start time.
-        (kkolinko) 
+        (kkolinko)
       </scode>
     </changelog>
   </subsection>
@@ -5337,7 +5340,7 @@
         class loader that loaded the WebSocket implementation. This allows
         WebSocket client connections from within web applications to access,
         amongst other things, the JNDI resources associated with the web
-        application. (markt) 
+        application. (markt)
       </fix>
       <fix>
         <bug>56905</bug>: Make destruction on web application stop of thread
@@ -5377,7 +5380,7 @@
       <fix>
         Correct the label in the list of sessions by idle time for the bin that
         represents the idle time immediately below the maximum permitted idle
-        time when using the expire command of the Manager application. (markt) 
+        time when using the expire command of the Manager application. (markt)
       </fix>
       <update>
         Update the Windows authentication documentation after some additional
@@ -5503,7 +5506,7 @@
       <fix>
         <bug>56666</bug>: When clearing the SSO cookie use the same values for
         domain, path, httpOnly and secure as were used to set the SSO cookie.
-        (markt) 
+        (markt)
       </fix>
       <fix>
         <bug>56677</bug>: Ensure that
@@ -5813,7 +5816,7 @@
      <fix>
        <bug>56536</bug>: Ensure that
        <code>HttpSessionBindingListener.valueUnbound()</code> uses the correct
-       class loader when the <code>SingleSignOn</code> valve is used. (markt) 
+       class loader when the <code>SingleSignOn</code> valve is used. (markt)
      </fix>
     </changelog>
   </subsection>
@@ -6110,7 +6113,7 @@
       </fix>
       <fix>
         Make the default compiler source and target versions for JSPs Java 6
-        since Tomcat 7 requires Java 6 as a minimum. (markt) 
+        since Tomcat 7 requires Java 6 as a minimum. (markt)
       </fix>
       <update>
         <bug>56283</bug>: Update to the Eclipse JDT Compiler P20140317-1600
@@ -6225,7 +6228,7 @@
     <changelog>
       <fix>
         Generate a valid root element for the effective web.xml for a web
-        application for all supported versions of web.xml. (markt) 
+        application for all supported versions of web.xml. (markt)
       </fix>
     </changelog>
   </subsection>
@@ -6434,11 +6437,11 @@
       <fix>
         Clarify that the connectionTimeout may also be used as the read timeout
         when reading a request body (if any) in the documentation web
-        application. (markt) 
+        application. (markt)
       </fix>
       <fix>
         Clarify the behaviour of the maxConnections attribute for a connector in
-        the documentation web application. (markt) 
+        the documentation web application. (markt)
       </fix>
       <fix>
         <bug>55888</bug>: Update the documentation web application to make it
@@ -6457,7 +6460,7 @@
         In Manager web application improve handling of file upload errors.
         Display a message instead of error 500 page. Simplify parts handling
         code, as it is known that Tomcat takes care of them when recycling a
-        request. (kkolinko) 
+        request. (kkolinko)
       </fix>
     </changelog>
   </subsection>
@@ -6487,7 +6490,7 @@
         <bug>55986</bug>: When forcing Tomcat to stop via
         <code>kill -9 $CATALINA_PID</code>, the <code>catalina.sh</code> script
         could incorrectly report that Tomcat had not yet completely stopped when
-        it had. Based on a patch by jess. (markt) 
+        it had. Based on a patch by jess. (markt)
       </fix>
       <fix>
         Package correct license and notice files with embedded JARs. (markt)
@@ -6533,7 +6536,7 @@
       <fix>
         <bug>55855</bug>: This is a partial fix that bypasses the relatively
         expensive check for a WebSocket upgrade request if no WebSocket
-        endpoints have been registered. (markt) 
+        endpoints have been registered. (markt)
       </fix>
       <fix>
         <bug>55905</bug>: Prevent a NPE when web.xml references a taglib file
@@ -6613,7 +6616,7 @@
     <changelog>
       <add>
         <bug>51294</bug>: Add support for unpacking WARs located outside of the
-        Host's appBase in to the appBase. (markt) 
+        Host's appBase in to the appBase. (markt)
       </add>
       <fix>
         <bug>55656</bug>: Configure the Digester to use the server class loader
@@ -6655,7 +6658,7 @@
       </fix>
       <fix>
         Define the web-fragment.xml in tomcat7-websocket.jar as a Servlet 3.0
-        web fragment rather than as a Servlet 3.1 web fragment. (markt) 
+        web fragment rather than as a Servlet 3.1 web fragment. (markt)
       </fix>
       <fix>
         <bug>55715</bug>: Add a per web application executor to the WebSocket
@@ -6706,7 +6709,7 @@
         When Catalina parses TLD files, always use a namespace aware parser to
         be consistent with how Jasper parses TLD files. The
         <code>tldNamespaceAware</code> attribute of the Context is now ignored.
-        (markt) 
+        (markt)
       </fix>
       <fix>
         Deprecate the <code>tldNamespaceAware</code> Context attribute as TLDs
@@ -6851,7 +6854,7 @@
         unnecessary nesting for acquisition of cluster instance. (kfujino)
       </scode>
       <fix>
-        Remove unnecessary attributes of 
+        Remove unnecessary attributes of
         <code>stateTransferCreateSendTime</code> and <code>receiverQueue</code>
         from cluster manager template. These attributes should not be defined as
         a template. (kfujino)
@@ -6968,7 +6971,7 @@
     <changelog>
       <fix>
         Avoid hang observed with Java 6 on Windows when stopping the Tomcat
-        process via CTRL-C. (markt) 
+        process via CTRL-C. (markt)
       </fix>
     </changelog>
   </subsection>
@@ -7185,7 +7188,7 @@
       </update>
       <update>
         Deprecate the Tomcat proprietary WebSocket API in favour of the new
-        JSR-356 implementation. (markt) 
+        JSR-356 implementation. (markt)
       </update>
       <fix>
         <bug>55494</bug>: Reduce severity of log message from warning to
@@ -7252,7 +7255,7 @@
         Refactor the connectors to support the new JSR-356 Java WebSocket
         1.0 implementation. The most noticeable change is that the AJP
         APR/native and HTTP APR/native connectors no longer support multiple
-        poller threads. Both connectors now use a single poller thread. (markt)  
+        poller threads. Both connectors now use a single poller thread. (markt)
       </update>
       <fix>
         Internally, content length is managed as a <code>long</code>. Fix a few
@@ -7280,7 +7283,7 @@
         Update the APR/native connector to version 1.1.28. Make this the minimum
         acceptable version as the correct behaviour of the JSR-356 WebSocket
         implementation when using the APR/native HTTP connector depends on a bug
-        fix in the 1.1.28 release. (markt) 
+        fix in the 1.1.28 release. (markt)
       </fix>
     </changelog>
   </subsection>
@@ -7389,7 +7392,7 @@
         Correctly associated the default resource bundle with the English locale
         so that requests that specify an Accept-Language of English ahead of
         French, Spanish or Japanese get the English messages they asked for.
-        (markt) 
+        (markt)
       </fix>
       <fix>
         <bug>55469</bug>: Fixed tags that were not properly closed. Based on a
@@ -7440,7 +7443,7 @@
         available on platforms that use <code>catalina.sh</code>. (markt)
       </add>
       <fix>
-        <bug>55204</bug>: Correct namespace used in Servlet 2.4 test web 
+        <bug>55204</bug>: Correct namespace used in Servlet 2.4 test web
         application. Patch provided by Jeremy Boynes. (markt)
       </fix>
       <fix>
@@ -7557,7 +7560,7 @@
       </fix>
       <fix>
         <bug>55160</bug>: Don't ignore connectionUploadTimeout setting when
-        using HTTP NIO connector. (markt) 
+        using HTTP NIO connector. (markt)
       </fix>
       <fix>
         <bug>55176</bug>: Correctly handle regular expressions within SSI
@@ -7693,10 +7696,10 @@
         files via <code>javax.servlet.http.Part.write(String)</code>. (markt)
       </fix>
       <fix>
-        <bug>54974</bug>: Ensure that 
+        <bug>54974</bug>: Ensure that
         <code>SessionCookieConfig#set&lt;methods&gt;</code>
         will throw <code>IllegalStateException</code> if the
-        <code>ServletContext</code> from which this 
+        <code>ServletContext</code> from which this
         <code>SessionCookieConfig</code> was acquired has already been
         initialized. (violetagg)
       </fix>
@@ -7709,7 +7712,7 @@
       <fix>
         Ensure that when Tomcat&apos;s anti-resource locking features are used
         that the temporary copy of the web application and not the original is
-        removed when the web application stops. (markt) 
+        removed when the web application stops. (markt)
       </fix>
       <fix>
         <bug>54984</bug>: Use the correct encoding when processing a form data
@@ -7719,7 +7722,7 @@
       <fix>
         <bug>54999</bug>: The old JSESSIONIDSSO needs to be removed when SSO is
         being used and logout() and login() occur within a single request. Patch
-        provided by Keith Mashinter. (markt) 
+        provided by Keith Mashinter. (markt)
       </fix>
       <add>
         <bug>55035</bug>: Add support for the version attribute to the deploy
@@ -7763,7 +7766,7 @@
         <bug>54968</bug>: Return the correct version number (2.2) of the JSP
         specification that is supported by the JSP engine when
         <code>javax.servlet.jsp.JspEngineInfo#getSpecificationVersion()</code>
-        is invoked. (violetagg) 
+        is invoked. (violetagg)
       </fix>
     </changelog>
   </subsection>
@@ -7875,7 +7878,7 @@
       <fix>
         <bug>54821</bug>: Do not attempt to parse text that looks like an EL
         expressions in a JSP document if EL expressions have been disabled.
-        (kkolinko/markt)  
+        (kkolinko/markt)
       </fix>
       <fix>
         <bug>54888</bug>: Add support for CSV lists with the ForEach tag plugin.
@@ -8021,7 +8024,7 @@
         Daniel Mikusa. (kkolinko)
       </fix>
       <fix>
-        <bug>54684</bug>: Add <code>javax.naming.spi</code> to 
+        <bug>54684</bug>: Add <code>javax.naming.spi</code> to
         <code>Import-Package</code> header in MANIFEST.MF in order to resolve
         <code>ClassNotFoundException</code> when running in OSGi environment.
         (violetagg)
@@ -8407,7 +8410,7 @@
         <bug>54262</bug>: Ensure that an empty
         <code>&lt;absolute-ordering /&gt;</code> element in the main web.xml
         file disables scanning for web fragments. Based on a patch by  Violeta
-        Georgieva. (markt) 
+        Georgieva. (markt)
       </fix>
       <fix>
         <bug>54284</bug>: As per clarification from the Servlet EG, anonymous
@@ -8454,11 +8457,11 @@
       </fix>
       <fix>
         <bug>54387</bug>: Deployment must fail when multiple servlets are mapped
-        to the same url-pattern. (markt)  
+        to the same url-pattern. (markt)
       </fix>
       <fix>
         <bug>54391</bug>: Provide a value for the
-        <code>javax.servlet.context.orderedLibs</code> attribute. (markt) 
+        <code>javax.servlet.context.orderedLibs</code> attribute. (markt)
       </fix>
     </changelog>
   </subsection>
@@ -8499,7 +8502,7 @@
       </fix>
       <fix>
         <bug>54260</bug>: Avoid <code>NullPointerException</code> when using
-        JSP unloading and tag files. (markt)  
+        JSP unloading and tag files. (markt)
       </fix>
       <fix>
         <bug>54370</bug>: Improve handling of nulls when trying to match sets of
@@ -8543,7 +8546,7 @@
       <fix>
         <bug>53871</bug>: Improve error message if annotation scanning fails
         during web application start due to poor configuration or illegal
-        cyclic inheritance with the application&apos;s classes. (markt) 
+        cyclic inheritance with the application&apos;s classes. (markt)
       </fix>
       <fix>
         Fix unit test for AccessLogValve when using non-GMT time zone. (rjung)
@@ -8637,7 +8640,7 @@
       <fix>
         <bug>54044</bug>: Correct bug in timestamp cache used by logging
         (including the access log valve) that meant entries could be made with
-        an earlier timestamp than the true timestamp. (markt) 
+        an earlier timestamp than the true timestamp. (markt)
       </fix>
       <fix>
         <bug>54054</bug>: Do not share shell environment variables between
@@ -8660,13 +8663,13 @@
         address <bug>54060</bug>. The new parser includes a work-around for a
         bug in the Adobe Acrobat Reader 9.x plug-in for Microsoft Internet
         Explorer that was identified when the old parser was introduced
-        (<bug>53814</bug>).  
+        (<bug>53814</bug>).
       </update>
       <fix>
         <bug>54076</bug>: Add an alternative work-around for clients that use
         SPNEGO authentication and expect the authenticated user to be cached
         per connection (Tomcat only does this if an HTTP session is available).
-        (markt) 
+        (markt)
       </fix>
       <fix>
         <bug>54087</bug>: Correctly handle (ignore) invalid If-Modified-Since
@@ -8791,7 +8794,7 @@
         no longer exist. (kfujino)
       </fix>
       <fix>
-        <bug>54086</bug>: Fix threading issue when stopping an 
+        <bug>54086</bug>: Fix threading issue when stopping an
         <code>NioReceiver</code>. (markt)
       </fix>
     </changelog>
@@ -8877,7 +8880,7 @@
         When the <code>DefaultServlet</code> is under heavy load, the HTTP
         header parser added to address <bug>52811</bug> generates large amounts
         of garbage and uses significant CPU time. A cache has been added that
-        significantly reduces the overhead of this parser. (markt) 
+        significantly reduces the overhead of this parser. (markt)
       </fix>
       <fix>
         <bug>53854</bug>: Make directory listings work correctly when aliases
@@ -8916,7 +8919,7 @@
         Make sessions saved in the <code>Store</code> associated with a
         <code>Manager</code> that extends <code>PersistentManager</code>
         optionally visible (via the showProxySessions Servlet initialisation
-        parameter in web.xml) to the Manager web application. (markt) 
+        parameter in web.xml) to the Manager web application. (markt)
       </add>
     </changelog>
   </subsection>
@@ -8989,7 +8992,7 @@
       <fix>
         <bug>53623</bug>: When performing a asynchronous dispatch after series
         of forwards, ensure that the request properties are correct for the
-        request at each stage. (markt) 
+        request at each stage. (markt)
       </fix>
       <fix>
         <bug>53624</bug>: Ensure that
@@ -9243,11 +9246,11 @@
         of the setting of metadata complete. However, if an absolute ordering is
         specified and a JAR is excluded from that ordering it will not be
         scanned for ServletContainerInitializers nor will it be scanned for
-        matches to any HandleTypes annotations. (markt) 
+        matches to any HandleTypes annotations. (markt)
       </fix>
       <add>
         <bug>53465</bug>: Populate mapped-name property for resources defined in
-        web.xml. Based on a patch by Violeta Georgieva. (markt) 
+        web.xml. Based on a patch by Violeta Georgieva. (markt)
       </add>
       <add>
         Make the request available when establishing a WebSocket connection.
@@ -9264,7 +9267,7 @@
     <changelog>
       <fix>
         <bug>53430</bug>: Avoid a JVM crash when a connector that requires the
-        APR/native library is explicitly specified and the library, or a recent 
+        APR/native library is explicitly specified and the library, or a recent
         enough  version of it, is not available. (markt)
       </fix>
     </changelog>
@@ -9287,7 +9290,7 @@
       <fix>
         Update the WebSocket examples in the examples web application so that
         they work with secure connections (wss) as well as non-secure (ws)
-        connections. (markt)  
+        connections. (markt)
       </fix>
       <fix>
         <bug>53456</bug>: Minor corrections and improvements to the HTTP
@@ -9364,7 +9367,7 @@
       <add>
         <bug>52954</bug>: Make DIGEST authentication tolerant of clients (mainly
         older Android implementations) that do not follow RFC 2617 exactly.
-        (markt) 
+        (markt)
       </add>
       <update>
         <bug>52955</bug>: Implement custom thread factory for container
@@ -9373,7 +9376,7 @@
       </update>
       <fix>
         <bug>52999</bug>: Remove synchronization bottleneck from the firing of
-        <code>Container</code> events. (markt)  
+        <code>Container</code> events. (markt)
       </fix>
       <add>
         <bug>53008</bug>: Additional test cases for BASIC authentication and
@@ -9451,7 +9454,7 @@
       </fix>
       <fix>
         <bug>53074</bug>: Switch to an infinite socket timeout by default for
-        WebSocket connections. (markt) 
+        WebSocket connections. (markt)
       </fix>
       <fix>
         <bug>53081</bug>: Do not always cache resources loaded by the web
@@ -9606,7 +9609,7 @@
       </fix>
       <update>
         Update default value of pollerThreadCount for the NIO connector.
-        The new default value will never go above 2 regardless of 
+        The new default value will never go above 2 regardless of
         available processors. (fhanik)
       </update>
       <add>
@@ -9716,7 +9719,7 @@
       <update>
         <bug>53367</bug> (<rev>1346691</rev>):
         Prevent pool from hanging during database failure (fhanik)
-      </update>  
+      </update>
       <update>
          When a connection is reconnected due to failed validation
          make sure the ConnectionState is reset or it will assume
@@ -9827,8 +9830,8 @@
         SingleSignOn. Patch provide by Brian Burch. (markt)
       </add>
       <fix>
-        <bug>52846</bug>: Make sure NonLoginAuthenticator registers not 
-        MemoryUser but GenericPrincipal into a session when UserDatabaseRealm 
+        <bug>52846</bug>: Make sure NonLoginAuthenticator registers not
+        MemoryUser but GenericPrincipal into a session when UserDatabaseRealm
         is used. (kfujino)
       </fix>
       <add>
@@ -9898,7 +9901,7 @@
       </fix>
       <fix>
         <bug>52926</bug>: Avoid NPE when an NIO Comet connection times out on
-        one thread at the same time as it is closed on another thread. (markt)  
+        one thread at the same time as it is closed on another thread. (markt)
       </fix>
       <add>
         Include port number when known in connector name when logging messages
@@ -9913,7 +9916,7 @@
         When using the APR connector ensure that any connections in a keep-alive
         state are closed when the connector is stopped rather than when the
         connector is destroyed. This is important when stop() followed by
-        start() is called on the connector. (markt) 
+        start() is called on the connector. (markt)
       </fix>
     </changelog>
   </subsection>
@@ -10003,7 +10006,7 @@
       </fix>
       <fix>
         <bug>52002</bug> (<rev>1302948</rev>):
-        Add in configuration option to disallow connection reuse. 
+        Add in configuration option to disallow connection reuse.
         (<rev>1305862</rev>):
         useDisposableConnectionFacade is by default enabled (fhanik)
       </fix>
@@ -10021,9 +10024,9 @@
       </fix>
       <fix>
         <bug>52066</bug> (<rev>1305931</rev>):
-        Add in configuration option, progagateInterruptState, to allow threads to 
+        Add in configuration option, progagateInterruptState, to allow threads to
         retain the interrupt state. (fhanik)
-      </fix>  
+      </fix>
     </changelog>
   </subsection>
   <subsection name="Other">
@@ -10059,12 +10062,12 @@
       <fix>
         Refactor the fix for <bug>52184</bug> to correct two issues (a missing
         class and incorrect class/method names) when using the extras logging
-        packages. (markt)  
+        packages. (markt)
       </fix>
       <fix>
         <bug>52444</bug>: Only load classes during HandlesTypes processing if
         the class is a match. Previously, every class in the web application was
-        loaded regardless of whether it was a match or not. (markt)  
+        loaded regardless of whether it was a match or not. (markt)
       </fix>
       <fix>
         <bug>52488</bug>: Correct typo: exipre -> expire. (markt)
@@ -10076,7 +10079,7 @@
       <fix>
         <bug>52511</bug>: Correct regression in the fix for <bug>51741</bug>
         that caused a harmless exception to be logged when scanning for
-        annotations and <code>WEB-INF/classes</code> did not exist. (markt) 
+        annotations and <code>WEB-INF/classes</code> did not exist. (markt)
       </fix>
       <scode>
         Refactor to remove a circular dependency between
@@ -10086,7 +10089,7 @@
       <scode>
         Remove some initialisation code from the standard start process (i.e.
         via the scripts) that was intended for embedding but is not required
-        when performing a standard start.(markt) 
+        when performing a standard start.(markt)
       </scode>
       <add>
         Add new method to <code>MBeanFactory</code> that allows any Valve to be
@@ -10147,7 +10150,7 @@
     <changelog>
       <add>
         <bug>51543</bug>: Provide a meaningful error message when writing more
-        response headers than permitted. (markt) 
+        response headers than permitted. (markt)
       </add>
       <fix>
         <bug>52547</bug>: Ensure that bytes written (which is used by the access
@@ -10275,7 +10278,7 @@
       <add>
         <bug>52184</bug>: Provide greater control over the logging of errors
         triggered by invalid input data (i.e. data over which Tomcat has no
-        control). (markt/kkolinko) 
+        control). (markt/kkolinko)
       </add>
       <fix>
         <bug>52225</bug>: Fix ClassCastException in an Alias added to
@@ -10319,7 +10322,7 @@
       </fix>
       <fix>
         <bug>52326</bug>: Reduce log level for class loading errors during
-        <code>@HandlesTypes</code> processing to debug. (markt) 
+        <code>@HandlesTypes</code> processing to debug. (markt)
       </fix>
       <fix>
         <bug>52328</bug>: Improve performance when large numbers of single
@@ -10348,7 +10351,7 @@
         defined in the first maintenance release (also know as Rev. A). See the
         <a href="http://jcp.org/aboutJava/communityprocess/maintenance/jsr315/servlet3-mr-reva.html"
         rel="nofollow">JCP documentation</a> for a detailed list of changes
-        (markt) 
+        (markt)
       </update>
       <fix>
         Improve JMX names for objects related to Connectors that have the
@@ -10424,7 +10427,7 @@
         <code>ValueExpression.getValueReference()</code> if the expression is an
         EL variable that the value returned is the <code>ValueReference</code>
         for the <code>ValueExpression</code> associated with the EL variable.
-        (markt) 
+        (markt)
       </fix>
       <fix>
         <bug>52445</bug>: Don&apos;t assume that EL method expressions have
@@ -10586,11 +10589,11 @@
       </fix>
       <scode>
         Simplify the deployment code and use full paths in log messages to
-        remove any ambiguity in where a context is being deployed from. (markt)  
+        remove any ambiguity in where a context is being deployed from. (markt)
       </scode>
       <fix>
         <bug>52009</bug>: Fix a NPE during access log entry recording when an
-        error occurred during the processing of a Comet request. (markt) 
+        error occurred during the processing of a Comet request. (markt)
       </fix>
       <fix>
         In <code>OneLineFormatter</code> log formatter in JULI always use
@@ -10630,7 +10633,7 @@
       </fix>
       <scode>
         Remove the Java 1.2 specific error handling around the adding of the
-        shutdown hook. (markt) 
+        shutdown hook. (markt)
       </scode>
       <fix>
         Correct errors in i18n resources and resource usage that meant some
@@ -10709,7 +10712,7 @@
         per host or web application specific) will now result in a redeploy
         of the affected web application(s) that ensures that any changes are
         correctly applied rather than a reload which ignores changes in
-        context.xml files. (markt/kkolinko) 
+        context.xml files. (markt/kkolinko)
       </fix>
       <fix>
         <bug>52173</bug>: Improve Javadoc for <code>delegate</code> attribute
@@ -10774,7 +10777,7 @@
     <changelog>
       <fix>
         Correct possible (but very small) memory leak when using maxLoadedJsps
-        to limit the number of JSPs loaded at any one time. (markt) 
+        to limit the number of JSPs loaded at any one time. (markt)
       </fix>
       <fix>
         <bug>52051</bug>: Better handling of missing resource problems with
@@ -10794,9 +10797,9 @@
   <subsection name="Cluster">
     <changelog>
       <fix>
-        Avoid an unnecessary session ID change notice. 
-        Notice of changed session ID by JvmRouteBinderValve is unnecessary to 
-        BackupManager. In BackupManager, change of session ID is replicated by 
+        Avoid an unnecessary session ID change notice.
+        Notice of changed session ID by JvmRouteBinderValve is unnecessary to
+        BackupManager. In BackupManager, change of session ID is replicated by
         the call of a setId() method. (kfujino)
       </fix>
       <fix>
@@ -10811,11 +10814,11 @@
         TestGroupChannelMemberArrival.testMemberArrival</code>.
         The bug affects any components that use NIO although it was more likely
         to be observed in the clustering module than the HTTP or AJP NIO
-        connector. (markt) 
+        connector. (markt)
       </fix>
       <add>
-        When Context manager does not exist, no context manager message is 
-        replied in order to avoid timeout (default 60sec) of 
+        When Context manager does not exist, no context manager message is
+        replied in order to avoid timeout (default 60sec) of
         GET_ALL_SESSIONS sync phase. (kfujino)
       </add>
       <fix>
@@ -10854,7 +10857,7 @@
   <subsection name="jdbc-pool">
     <changelog>
       <fix>
-        <bug>52015</bug>: In jdbc-pool: JdbcInterceptor passes not 'this' but 
+        <bug>52015</bug>: In jdbc-pool: JdbcInterceptor passes not 'this' but
         'proxy' to <code>getNext().invoke</code>. (kfujino)
       </fix>
       <fix>
@@ -10934,7 +10937,7 @@
         <bug>51550</bug>: An additional change that ensures any exceptions
         thrown by an Authenticator (or any other Valve configured for the
         Context) will be handled by the custom error pages for the Context if an
-        appropriate error page is configured. (markt) 
+        appropriate error page is configured. (markt)
       </fix>
       <fix>
         <bug>51580</bug>: Added a nicer error message when a WAR file contains
@@ -10970,7 +10973,7 @@
       <fix>
         <bug>51774</bug>: Fix incorrect cached method signature that prevented
         session tracking modes from being defined in web.xml when running under
-        a security manager. (markt) 
+        a security manager. (markt)
       </fix>
       <add>
         Add an annotation cache to the <code>DefaultInstanceManager</code> that
@@ -10992,7 +10995,7 @@
         to skip when scanning for TLDs and web fragments. (rjung)
       </update>
       <add>
-        <bug>51862</bug>: Added a <code>classesToInitialize</code> attribute to 
+        <bug>51862</bug>: Added a <code>classesToInitialize</code> attribute to
         <code>JreMemoryLeakPreventionListener</code> to allow pre-loading of configurable
         classes to avoid some classloader leaks. (slaurent)
       </add>
@@ -11027,7 +11030,7 @@
       </fix>
       <scode>
         Further re-factoring of the HTTP connectors to align the BIO, NIO and
-        APR implementations. (markt) 
+        APR implementations. (markt)
       </scode>
       <fix>
         <bug>51794</bug>: Fix race condition in NioEndpoint. (fhanik)
@@ -11073,7 +11076,7 @@
         <code>maxLoadedJsps</code> initialisation parameter, the unloading code
         was retaining a reference to the unloaded JSP preventing the
         associated class from being unloaded until the JSP that replaced it was
-        itself unloaded. (markt) 
+        itself unloaded. (markt)
       </fix>
       <fix>
         <bug>51852</bug>: Correct two problems in the handling of varargs
@@ -11112,23 +11115,23 @@
   <subsection name="jdbc-pool">
     <changelog>
       <fix>
-        In jdbc-pool: Avoid IllegalArgumentException when setting maxActive 
+        In jdbc-pool: Avoid IllegalArgumentException when setting maxActive
         less than or equal to 0.
         ArrayBlockingQueue doesn't allow capacity of 0 or less. (kfujino)
       </fix>
       <fix>
         <bug>48392</bug> (<rev>1169796</rev>): Fix typo in
-        <code>StatementDecoratorInterceptor</code>. (fhanik) 
+        <code>StatementDecoratorInterceptor</code>. (fhanik)
       </fix>
       <fix>
         <bug>51139</bug>:
-        In jdbc-pool: validatorClassName and suspectTimeout are ignored. 
-        In order to support them correctly, validatorClassName and 
+        In jdbc-pool: validatorClassName and suspectTimeout are ignored.
+        In order to support them correctly, validatorClassName and
         suspectTimeout are added to a property list. (kfujino)
       </fix>
       <fix>
         <bug>51786</bug>:
-        In jdbc-pool: Discarded connection is not active in a pool any longer. 
+        In jdbc-pool: Discarded connection is not active in a pool any longer.
         It removes from the active connection list. (kfujino)
       </fix>
       <fix>
@@ -11155,7 +11158,7 @@
         Eclipse, FindBugs and CheckStyle. (markt/kkolinko)
       </scode>
     </changelog>
-  </subsection>  
+  </subsection>
 </section>
 <section name="Tomcat 7.0.21 (markt)" rtext="released 2011-09-01">
   <subsection name="Catalina">
@@ -11229,11 +11232,11 @@
       </fix>
       <scode>
         Code clean-up and re-factoring to reduce duplicate code in the AJP
-        processor implementations. (markt) 
+        processor implementations. (markt)
       </scode>
       <add>
         Detect incomplete AJP messages and reject the associated request if one
-        is found. (markt) 
+        is found. (markt)
       </add>
       <fix>
         <bug>51698</bug>: Fix CVE-2011-3190. Prevent AJP message injection.
@@ -11252,7 +11255,7 @@
   <subsection name="Cluster">
     <changelog>
       <add>
-        <bug>51736</bug>: Make rpcTimeout configurable in BackupManager. 
+        <bug>51736</bug>: Make rpcTimeout configurable in BackupManager.
         (kfujino)
       </add>
     </changelog>
@@ -11284,7 +11287,7 @@
         (markt)
       </fix>
     </changelog>
-  </subsection>  
+  </subsection>
 </section>
 <section name="Tomcat 7.0.20 (markt)" rtext="released 2011-08-11">
   <subsection name="Catalina">
@@ -11349,7 +11352,7 @@
       </fix>
       <fix>
         In JDBCStore: Committing connection if autoCommit is false.
-        Make sure committed connection is returned to the pool if datasource is 
+        Make sure committed connection is returned to the pool if datasource is
         enabled. (kfujino)
       </fix>
       <add>
@@ -11406,7 +11409,7 @@
       </fix>
       <add>
         Improve error handling for HTTP APR if an error occurs while using
-        sendfile. (markt) 
+        sendfile. (markt)
       </add>
       <fix>
         Ensure that when using sendfile, HTTP APR sockets are not added to
@@ -11461,7 +11464,7 @@
         Character Encoding Filter to make the default request character encoding
         UTF-8 to improve i18n support. Note that best results will be obtained
         if the connector is also configured with
-        <code>URIEncoding=&quot;UTF-8&quot;</code>.(markt)  
+        <code>URIEncoding=&quot;UTF-8&quot;</code>.(markt)
       </update>
       <update>
         Update the documentation web application to be even more explicit about
@@ -11471,13 +11474,13 @@
       <fix>
         <bug>51561</bug>: Update the Realm page within the documentation web
         application to recommend the use of digest.[bat|sh] to generate digests
-        rather than calling RealmBase directly. (markt) 
+        rather than calling RealmBase directly. (markt)
       </fix>
       <fix>
         <bug>51567</bug>: Update the class loading page of the documentation
         web application to include information on the search order for the
         common class loader when separate values are used for $CATALINA_HOME and
-        $CATALINA_BASE. (markt) 
+        $CATALINA_BASE. (markt)
       </fix>
       <update>
         Improve class loading documentation and logging documentation.
@@ -11526,14 +11529,14 @@
       </fix>
       <fix>
         Use Tomcat icon (cat) instead of Apache Commons Daemon (feather) one
-        in the list of uninstallable programs on Windows. (kkolinko) 
+        in the list of uninstallable programs on Windows. (kkolinko)
       </fix>
       <update>
         Update to Apache Commons Daemon 1.0.7. (markt)
       </update>
       <fix>
         <bug>51621</bug>: Add additional required JARs to the deployer
-        distribution. (markt) 
+        distribution. (markt)
       </fix>
       <fix>
         Fix a small number of warnings reported by FindBugs. (markt)
@@ -11620,7 +11623,7 @@
       </fix>
       <fix>
         Prevent NPEs when a socket is closed in non-error conditions after
-        sendfile processing when using the HTTP NIO connector. (markt) 
+        sendfile processing when using the HTTP NIO connector. (markt)
       </fix>
     </changelog>
   </subsection>
@@ -11687,7 +11690,7 @@
       <fix>
         <bug>51467</bug>: Invoke Thread.start() rather than Thread.run() so that
         listeners and filters are stopped in a separate thread rather than the
-        current thread. Patch provided by Felix Schumacher. (markt)  
+        current thread. Patch provided by Felix Schumacher. (markt)
       </fix>
       <fix>
         <bug>51473</bug>: Fix concatenation of values in
@@ -11716,11 +11719,11 @@
       <update>
         Re-factor tests to align packages for tests with the classes under test.
         Start to convert non-JUnit tests to JUnit. Remove unnecessary code.
-        (markt) 
+        (markt)
       </update>
       <fix>
         Add synchronization to receiver socket binding to prevent test failures
-        on Linux. (markt) 
+        on Linux. (markt)
       </fix>
     </changelog>
   </subsection>
@@ -11807,7 +11810,7 @@
       <fix>
         Previous improvements in JAR scanning performance introduced a start-up
         performance penalty for some use cases. This fix addresses those
-        performance penalties while retaining the original improvements. (markt) 
+        performance penalties while retaining the original improvements. (markt)
       </fix>
       <add>
         <bug>51418</bug>: Provide more control over Context creation when
@@ -11867,7 +11870,7 @@
       <fix>
         <bug>51453</bug>: Fix a regression in the preemptive authentication
         support (enhancement <bug>12428</bug>) that could trigger authentication
-        even if preemptive authentication was disabled. (markt) 
+        even if preemptive authentication was disabled. (markt)
       </fix>
       <fix>
         Prevent possible NPE when serving Servlets that implement the
@@ -11905,7 +11908,7 @@
       </update>
       <fix>
         Correct a regression introduced in Apache Tomcat 7.0.11 that broke
-        certificate revocation list handling. (markt) 
+        certificate revocation list handling. (markt)
       </fix>
     </changelog>
   </subsection>
@@ -11940,7 +11943,7 @@
   <subsection name="Cluster">
     <changelog>
       <fix>
-        <bug>51306</bug>: Avoid NPE when handleSESSION_EXPIRED is processed 
+        <bug>51306</bug>: Avoid NPE when handleSESSION_EXPIRED is processed
         while handleSESSION_CREATED is being processed. (kfujino)
       </fix>
       <fix>
@@ -11949,9 +11952,9 @@
         notifyListenersOnReplication. (markt)
       </fix>
       <fix>
-        The change in session ID is notified to the container event listener on 
-        the backup node in cluster. 
-        This notification is controlled by 
+        The change in session ID is notified to the container event listener on
+        the backup node in cluster.
+        This notification is controlled by
         notifyContainerListenersOnReplication.(kfujino)
       </fix>
     </changelog>
@@ -12011,7 +12014,7 @@
       </update>
       <fix>
         <bug>51425</bug>, <bug>51450</bug>: Update Spanish translations. Based
-        on patches provided by Jesus Marin. (markt) 
+        on patches provided by Jesus Marin. (markt)
       </fix>
     </changelog>
   </subsection>
@@ -12057,7 +12060,7 @@
       </fix>
       <fix>
         <bug>51344</bug>: Fix problem with Lifecycle re-factoring for deprecated
-        embedded class that prevented events being triggered. (markt) 
+        embedded class that prevented events being triggered. (markt)
       </fix>
       <fix>
         <bug>51348</bug>: Prevent possible NPE when processing WebDAV locks.
@@ -12070,7 +12073,7 @@
       <fix>
         When parsing the port in the HTTP host header, restrict the value to be
         base 10 integer digits rather than hexadecimal ones.
-        (rjung/markt/kkolinko) 
+        (rjung/markt/kkolinko)
       </fix>
       <update>
         Various refactorings to reduce code duplication and unnecessary code in
@@ -12112,7 +12115,7 @@
         <bug>27122</bug>: Remove a workaround for a very old and since fixed
         Mozilla bug and change the default value of the securePagesWithPragma
         attribute of the Authenticator Valves to false. These changes should
-        reduce the likelihood of issues when downloading files with IE. (markt) 
+        reduce the likelihood of issues when downloading files with IE. (markt)
       </fix>
       <fix>
         <bug>35054</bug>: Check that a file is not specified for a Host&apos;s
@@ -12129,7 +12132,7 @@
       <fix>
         <bug>51249</bug>: Correct ClassLoaderLogManager system property
         replacement code so properties of the form "}${...}" can be used
-        without error. (markt) 
+        without error. (markt)
       </fix>
       <fix>
         <bug>51264</bug>: Allow the JDBC persistent session store to use a
@@ -12211,7 +12214,7 @@
       </fix>
       <fix>
         <bug>51251</bug>: Add web application version support to the Ant tasks.
-        Based on a patch provided by Eiji Takahashi. (markt) 
+        Based on a patch provided by Eiji Takahashi. (markt)
       </fix>
       <fix>
         <bug>51294</bug>: Clarify behaviour of unpackWAR attribute of
@@ -12339,7 +12342,7 @@
       </fix>
       <add>
         <bug>51119</bug>: Add JAAS authentication support to the
-        JMXRemoteLifecycleListener. Patch provided by Neil Laurance. (markt) 
+        JMXRemoteLifecycleListener. Patch provided by Neil Laurance. (markt)
       </add>
       <add>
         <bug>51136</bug>: Provide methods that enable the name of a Context on
@@ -12382,7 +12385,7 @@
         setting for processorCache of 200. This changes the default from -1
         (unlimited) for the AJP-BIO, AJP-APR and HTTP-APR connectors. Additional
         information was also added to the documentation on how to select an
-        appropriate value. 
+        appropriate value.
       </fix>
       <fix>
         Take account of time spent waiting for a processing thread when
@@ -12396,7 +12399,7 @@
       </fix>
       <fix>
         Improve handling in AJP connectors of the case where too large a AJP
-        packet is received. (markt) 
+        packet is received. (markt)
       </fix>
       <fix>
         Restore the automatic disabling of HTTP keep-alive with the BIO
@@ -12478,7 +12481,7 @@
       </update>
       <fix>
         <bug>51135</bug>: Fix auto-detection of JAVA_HOME for 64-bit Windows
-        platforms that only have a 32-bit JVM installed. (markt) 
+        platforms that only have a 32-bit JVM installed. (markt)
       </fix>
       <fix>
         <bug>51154</bug>: Remove duplicate @deprecated tags in ServletContext
@@ -12533,7 +12536,7 @@
       </fix>
       <update>
         Resolve some refactoring TODOs in the implementation of the new Context
-        attribute "swallowAbortedUploads". (markt) 
+        attribute "swallowAbortedUploads". (markt)
       </update>
       <fix>
         Include the seed time when calculating the time taken to create
@@ -12567,7 +12570,7 @@
       </fix>
       <fix>
         <bug>50929</bug>: When wrapping an exception, include the root cause.
-        Patch provided by sebb. (markt) 
+        Patch provided by sebb. (markt)
       </fix>
       <fix>
         <bug>50991</bug>: Fix regression in fix for <bug>25060</bug> that called
@@ -12582,7 +12585,7 @@
       </add>
       <fix>
         Correctly track changes to context.xml files and trigger redeployment
-        when copyXML is set to false. (markt) 
+        when copyXML is set to false. (markt)
       </fix>
       <fix>
         <bug>50997</bug>: Relax the requirement that directories must have a
@@ -12591,7 +12594,7 @@
       </fix>
       <fix>
         Don&apos;t append the jvmRoute to a session ID if the jvmRoute is a zero
-        length string. (markt) 
+        length string. (markt)
       </fix>
       <fix>
         Don&apos;t register non-singleton DataSource resources with JMX. (markt)
@@ -12616,7 +12619,7 @@
         <bug>50903</bug>: When a connector is stopped, ensure that requests that
         are currently in a keep-alive state and waiting for client data are not
         processed. Requests where processing has started will continue to
-        completion. (markt) 
+        completion. (markt)
       </fix>
       <fix>
         <bug>50927</bug>: Improve error message when SSLCertificateFile is not
@@ -12702,7 +12705,7 @@
         <bug>25060</bug>: Close Apache Commons DBCP datasources when the
         associated JNDI naming context is stopped (e.g. for a non-global
         DataSource resource on web application reload) to close remaining
-        database connections immediately rather than waiting for garbage 
+        database connections immediately rather than waiting for garbage
         collection. (markt)
       </add>
       <add>
@@ -12772,7 +12775,7 @@
       <fix>
         <bug>28852</bug>: Add URL encoding where missing to parameters in URLs
         presented by Ant tasks to the Manager application. Based on a patch by
-        Stephane Bailliez. (markt) 
+        Stephane Bailliez. (markt)
       </fix>
       <fix>
         Improve handling of SSL renegotiation by failing earlier when the
@@ -12780,7 +12783,7 @@
       </fix>
       <fix>
         Improve shut down speed by not renewing threads during shut down when
-        the <code>ThreadLocalLeakPreventionListener</code> is enabled. (markt)  
+        the <code>ThreadLocalLeakPreventionListener</code> is enabled. (markt)
       </fix>
     </changelog>
   </subsection>
@@ -12892,7 +12895,7 @@
       </add>
       <fix>
         Don&apos;t attempt to start NamingResources for Contexts multiple times.
-        (markt) 
+        (markt)
       </fix>
       <fix>
         <bug>50826</bug>: Avoid <code>IllegalArgumentException</code> if an
@@ -12918,7 +12921,7 @@
     <changelog>
       <fix>
         <bug>50780</bug>: Fix memory leak in APR implementation of AJP
-        connector introduced by the refactoring for <bug>49884</bug>. (markt) 
+        connector introduced by the refactoring for <bug>49884</bug>. (markt)
       </fix>
       <fix>
         If server configuration errors and/or faulty applications caused the
@@ -12950,8 +12953,8 @@
   <subsection name="Cluster">
     <changelog>
       <fix>
-        <bug>50771</bug>: Ensure HttpServletRequest#getAuthType() returns the 
-        name of the authentication scheme if request has already been 
+        <bug>50771</bug>: Ensure HttpServletRequest#getAuthType() returns the
+        name of the authentication scheme if request has already been
         authenticated. (kfujino)
       </fix>
     </changelog>
@@ -12969,7 +12972,7 @@
       <fix>
         <bug>50667</bug> (<rev>1068549</rev>): Allow RPC callers to get
         confirmation when sending a reply. (fhanik)
-      </fix>  
+      </fix>
     </changelog>
   </subsection>
   <subsection name="Other">
@@ -13001,11 +13004,11 @@
     <changelog>
       <fix>
         Reduce level of log message for invalid URL parameters from WARNING to
-        INFO. (markt) 
+        INFO. (markt)
       </fix>
       <fix>
         Fix hanging Servlet 3 asynchronous requests when using the APR based AJP
-        connector. (markt) 
+        connector. (markt)
       </fix>
     </changelog>
   </subsection>
@@ -13110,7 +13113,7 @@
       </fix>
       <fix>
         Prevent multiple Comet END events if the CometServlet calls
-        <code>event.close()</code> during an END event. (markt) 
+        <code>event.close()</code> during an END event. (markt)
       </fix>
       <fix>
         <bug>50325</bug>: When the JVM indicates support for RFC 5746, disable
@@ -13224,7 +13227,7 @@
         JavaMail resources. (markt)
       </fix>
       <fix>
-        <bug>50599</bug>: Use correct names of roles required to access the 
+        <bug>50599</bug>: Use correct names of roles required to access the
         Manager application. (markt)
       </fix>
     </changelog>
@@ -13237,7 +13240,7 @@
       <fix>
         Modify the build script so a release build always rebuilds the
         dependencies to ensure that the correct Tomcat version appears in the
-        manifest. (markt) 
+        manifest. (markt)
       </fix>
       <fix>
         Code clean-up to remove unused code and reduce IDE warnings. (markt)
@@ -13283,7 +13286,7 @@
       </update>
       <update>
         <bug>48822</bug>: Include context name in case of error while stopping
-        or starting a context during its reload. Patch provided by Marc 
+        or starting a context during its reload. Patch provided by Marc
         Guillemot. (slaurent)
       </update>
       <add>
@@ -13293,7 +13296,7 @@
         on a patch by Sylvain Laurent. (markt)
       </add>
       <add>
-        <bug>48973</bug>: Avoid creating a SESSIONS.ser file when stopping an 
+        <bug>48973</bug>: Avoid creating a SESSIONS.ser file when stopping an
         application if there's no session. Patch provided by Marc Guillemot.
         (slaurent)
       </add>
@@ -13318,7 +13321,7 @@
       </fix>
       <fix>
         <bug>49650</bug>: Remove unnecessary entries package.access property
-        defined in catalina.properties. Patch provided by Owen Farrell. (markt) 
+        defined in catalina.properties. Patch provided by Owen Farrell. (markt)
       </fix>
       <fix>
         <bug>50106</bug>: Correct several MBean descriptors. Patch provided by
@@ -13343,7 +13346,7 @@
       </add>
       <fix>
         <bug>50351</bug>: Fix the regression that broke BeanFactory resources
-        caused by the previous fix for <bug>50159</bug>. (markt) 
+        caused by the previous fix for <bug>50159</bug>. (markt)
       </fix>
       <fix>
         <bug>50352</bug>: Ensure that <code>AsyncListener.onComplete()</code> is
@@ -13351,7 +13354,7 @@
       </fix>
       <fix>
         <bug>50358</bug>: Set the correct LifecycleState when stopping instances
-        of the deprecated Embedded class. (markt) 
+        of the deprecated Embedded class. (markt)
       </fix>
       <fix>
         Further Lifecycle refactoring for Connectors and associated components.
@@ -13374,7 +13377,7 @@
       <fix>
         <bug>50411</bug>: Ensure sessions are removed from the
         <code>Store</code> associated with a <code>PersistentManager</code>.
-        (markt) 
+        (markt)
       </fix>
       <fix>
         <bug>50413</bug>: Ensure 304 responses are not returned when using
@@ -13423,8 +13426,8 @@
       <add>
         <bug>50556</bug>: Improve JreMemoryLeakPreventionListener to prevent
         a potential class loader leak caused by a thread spawned when the class
-        <code>com.sun.jndi.ldap.LdapPoolManager</code> is initialized and the 
-        system property <code>com.sun.jndi.ldap.connect.pool.timeout</code> is 
+        <code>com.sun.jndi.ldap.LdapPoolManager</code> is initialized and the
+        system property <code>com.sun.jndi.ldap.connect.pool.timeout</code> is
         set to a value greater than 0. (slaurent)
       </add>
     </changelog>
@@ -13497,11 +13500,11 @@
         INFO rather than WARNING. (markt)
       </fix>
       <fix>
-        <bug>50503</bug>: When web application has a version, Engine level 
+        <bug>50503</bug>: When web application has a version, Engine level
         Clustering works correctly. (kfujino)
       </fix>
       <fix>
-        <bug>50547</bug>: Add time stamp for CHANGE_SESSION_ID message and 
+        <bug>50547</bug>: Add time stamp for CHANGE_SESSION_ID message and
         SESSION_EXPIRED message. (kfujino)
       </fix>
     </changelog>
@@ -13514,7 +13517,7 @@
       </fix>
       <add>
         <bug>50294</bug>: Add more information to documentation regarding format
-        of configuration files. Patch provided by Luke Meyer. (markt) 
+        of configuration files. Patch provided by Luke Meyer. (markt)
       </add>
       <fix>
         Correctly validate provided context path so sessions for the ROOT web
@@ -13528,7 +13531,7 @@
         note regarding server VMs. (markt)
       </fix>
       <fix>
-        Further filtering of Manager display output. (kkolinko) 
+        Further filtering of Manager display output. (kkolinko)
       </fix>
     </changelog>
   </subsection>
@@ -13571,7 +13574,7 @@
         authentication process. Based on a suggestion by Mark Morris. (markt)
       </fix>
       <fix>
-        <bug>49180</bug>: Add option to disable log rotation in 
+        <bug>49180</bug>: Add option to disable log rotation in
         juli FileHandler. Patch provided by Pid (pidster at apache). (funkman)
       </fix>
       <fix>
@@ -13614,7 +13617,7 @@
         <bug>50222</bug>: Modify memory leak prevention code so it pins the
         system class loader in memory rather than than the common class loader,
         which is better for embedded systems. Patch provided by Christopher
-        Schultz. (markt) 
+        Schultz. (markt)
       </add>
       <add>
         Improve debug logging for MapperListener registration. (markt)
@@ -13729,7 +13732,7 @@
       </add>
       <fix>
         <bug>50192</bug>: Improve performance for EL when running under a
-        security manager. Based on a patch by Robert Goff. (markt) 
+        security manager. Based on a patch by Robert Goff. (markt)
       </fix>
       <fix>
         <bug>50228</bug>: Improve recycling of <code>BodyContentImpl</code>.
@@ -13742,7 +13745,7 @@
         a result of normal operation. (markt)
       </add>
       <fix>
-        <bug>50293</bug>: Increase the size of internal ELResolver array from 2 
+        <bug>50293</bug>: Increase the size of internal ELResolver array from 2
         to 8 since in typical usage there are at least 5 resolvers. Based on a
         patch by Robert Goff. (markt)
       </fix>
@@ -13755,8 +13758,8 @@
       </fix>
       <fix>
         Improve sending an access message in DeltaManager.
-        maxInactiveInterval of not Manager but the session is used. 
-        If maxInactiveInterval is negative, an access message is not sending. 
+        maxInactiveInterval of not Manager but the session is used.
+        If maxInactiveInterval is negative, an access message is not sending.
         (kfujino)
       </fix>
       <fix>
@@ -13771,7 +13774,7 @@
       <fix>
         Ensure that a new Context waiting for session data from other nodes in
         the cluster does not block the processing of clustering messages for
-        other Contexts. (markt) 
+        other Contexts. (markt)
       </fix>
     </changelog>
   </subsection>
@@ -13794,7 +13797,7 @@
       <add>
         Restore the ability to edit the contents of /WEB-INF and /META-INF via
         WebDAV via the provision of a new configuration option,
-        allowSpecialPaths. (markt) 
+        allowSpecialPaths. (markt)
       </add>
       <fix>
         Correct broken links for on-line JavaDocs. (markt)
@@ -13811,10 +13814,10 @@
       </update>
       <fix>
         <bug>50303</bug>: Update JNDI how-to to reflect the new JavaMail
-        download location and that JAF is now included in Java SE 6. (markt) 
+        download location and that JAF is now included in Java SE 6. (markt)
       </fix>
       <fix>
-        Fix ordering functionality on sessions page for the HTML Manager 
+        Fix ordering functionality on sessions page for the HTML Manager
         application. (markt)
       </fix>
       <fix>
@@ -13833,7 +13836,7 @@
         CVE-2010-4172: Multiple XSS in the Manager application. (markt/kkolinko)
       </fix>
       <fix>
-        <bug>50316</bug>: Fix display of negative values in the Manager 
+        <bug>50316</bug>: Fix display of negative values in the Manager
         application. (kkolinko)
       </fix>
       <fix>
@@ -13849,7 +13852,7 @@
       </fix>
       <fix>
         <bug>22965</bug>: Fix some typos and formatting issues in the global
-        web.xml file. Based on a patch by Yann Cébron. (markt) 
+        web.xml file. Based on a patch by Yann Cébron. (markt)
       </fix>
       <add>
         Extend Checkstyle validation checks to check for unused imports. (markt)
@@ -13919,8 +13922,8 @@
         patch by David Jencks. (markt)
       </fix>
       <fix>
-        To avoid NoSuchMethodException, xmlValidation and xmlNamespaceAware are 
-        removed from the createStandardHost definition 
+        To avoid NoSuchMethodException, xmlValidation and xmlNamespaceAware are
+        removed from the createStandardHost definition
         of mbeans-descriptors.xml. (kfujino)
       </fix>
       <fix>
@@ -13934,7 +13937,7 @@
       </fix>
       <fix>
         <bug>49956</bug>: Handle case when @Resource annotation uses the full
-        JNDI name for a resource. Based on a patch by Gurkan Erdogdu. (markt) 
+        JNDI name for a resource. Based on a patch by Gurkan Erdogdu. (markt)
       </fix>
       <fix>
         <bug>49557</bug>: Correct regression due to Lifecycle refactoring that
@@ -13953,12 +13956,12 @@
       </fix>
       <fix>
         <bug>49994</bug>: As per the Java EE 6 specification, return a new
-        object instance for each JNDI look up of a resource reference. (markt) 
+        object instance for each JNDI look up of a resource reference. (markt)
       </fix>
       <fix>
         <bug>50015</bug>: Re-factor dynamic servlet security implementation to
         make extensions, such as JACC implementations, simpler. Patch provided
-        by David Jencks. (markt) 
+        by David Jencks. (markt)
       </fix>
       <fix>
         <bug>50016</bug>: Re-factor <code>isUserInRole()</code> and
@@ -13992,7 +13995,7 @@
     <changelog>
       <fix>
         <bug>49923</bug>: Avoid using negative timeouts during acceptor unlock
-        to ensure APR connector shuts down properly. (mturk) 
+        to ensure APR connector shuts down properly. (mturk)
       </fix>
       <fix>
         <bug>49972</bug>: Fix potential thread safe issue when formatting dates
@@ -14001,15 +14004,15 @@
       <fix>
         <bug>50003</bug>: Set not maxThreads but minSpareThreads to
         corePoolSize, if AbstractEndpoint.setMinSpareThreads is called.
-        (kfujino) 
+        (kfujino)
       </fix>
       <fix>
         <bug>50044</bug>: Fix issue when using comet where socket remained in
-        long poll after the comet request has ended. (markt) 
+        long poll after the comet request has ended. (markt)
       </fix>
       <fix>
-        <bug>50054</bug>: Correctly handle the setting of minSpareThreads in 
-        AJP connector. (kfujino) 
+        <bug>50054</bug>: Correctly handle the setting of minSpareThreads in
+        AJP connector. (kfujino)
       </fix>
       <fix>
         <bug>50072</bug>: Fix issues when using a non-blocking read for the
@@ -14229,7 +14232,7 @@
       <fix>
         <bug>50021</bug>: Correct a regression in the fix for <bug>46844</bug>
         that may have caused additional problems during a failure at start up.
-        (markt) 
+        (markt)
       </fix>
       <fix>
         <bug>50026</bug>: Prevent serving of resources from WEB-INF and
@@ -14340,7 +14343,7 @@
       </fix>
       <fix>
         <bug>49905</bug>: Prevent memory leak when using asynchronous session
-        replication. (markt) 
+        replication. (markt)
       </fix>
       <fix>
         <bug>49924</bug>: When non-primary node changes into a primary node,
