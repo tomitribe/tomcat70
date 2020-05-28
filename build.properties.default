@@ -25,9 +25,9 @@
 # ----- Version Control Flags -----
 version.major=7
 version.minor=0
-version.build=91
-version.patch=0
-version.suffix=-dev
+version.build=68
+version.patch=7
+version.suffix=-TT
 
 # ----- Build control flags -----
 # Note enabling validation uses Checkstyle which is LGPL licensed
@@ -51,7 +51,10 @@ test.cobertura=false
 java.net.preferIPv4Stack=false
 
 # Location of Java7 JDK
-#java.7.home=/path/to/java7/jdk
+java.7.home=/Users/cesar/.sdkman/candidates/java/7u79
+
+# Skip windows installer generation
+skip.installer=true
 
 # Location of GPG executable (used only for releases)
 gpg.exec=/path/to/gpg
