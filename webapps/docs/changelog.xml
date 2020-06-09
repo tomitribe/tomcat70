@@ -115,6 +115,9 @@
         the AJP/1.3 Connector. Requests with unreconised attributes will be
         blocked with a 403. (markt)
       </add>
+      <add>
+        Improve validation of storage location when using FileStore. (markt)
+      </add>
     </changelog>
   </subsection>
   <subsection name="General">
@@ -11721,6 +11724,9 @@
         Add a new attribute, <code>allowedRequestAttributesPattern</code> to
         the AJP/1.3 Connector. Requests with unreconised attributes will be
         blocked with a 403. (markt)
+      </add>
+      <add>
+        Improve validation of storage location when using FileStore. (markt)
       </add>
     </changelog>
   </subsection>
