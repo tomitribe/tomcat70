@@ -118,6 +118,10 @@
       <add>
         Improve validation of storage location when using FileStore. (markt)
       </add>
+      <fix>
+        <bug>64563</bug>: Add additional validation of payload length for
+        WebSocket messages. (markt)
+      </fix>
     </changelog>
   </subsection>
   <subsection name="General">
