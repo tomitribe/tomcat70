@@ -395,6 +395,10 @@
         <bug>58935</bug>: Remove incorrect references in the documentation to
         using <code>jar:file:</code> URLs with the Manager application. (markt) 
       </fix>
+      <scode>
+          Test for one directory being a sub-directory of another in a consistent
+          way. (markt)
+      </scode>
     </changelog>
   </subsection>
   <subsection name="Tribes">

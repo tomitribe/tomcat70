@@ -58,6 +58,7 @@ import org.apache.catalina.Manager;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.core.StandardHost;
 import org.apache.catalina.util.ContextName;
+import org.apache.catalina.util.FileUtil;
 import org.apache.catalina.util.IOTools;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
@@ -655,8 +656,8 @@ public class HostConfig
                     docBase = new File(appBase(), context.getDocBase());
                 }
                 // If external docBase, register .xml as redeploy first
-                if (!docBase.getCanonicalPath().startsWith(
-                        appBase().getAbsolutePath() + File.separator)) {
+                FileUtil appBaseUtil = new FileUtil(appBase());
+                if (!appBaseUtil.isParentOf(docBase)) {
                     isExternal = true;
                     deployedApp.redeployResources.put(
                             contextXml.getAbsolutePath(),
